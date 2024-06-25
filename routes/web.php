@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\TableAvailabilityController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,3 +19,4 @@ Route::get('/', function () {
 Route::get('/test', function () {
     return view('test');
 });
+Route::resource('/booking', TableAvailabilityController::class);
