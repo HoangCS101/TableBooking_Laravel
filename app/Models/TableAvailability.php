@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TableAvailability extends Model
 {
     protected $fillable = [
-        'table_id', 'date', 'start_time','end_time', 'guest_name', 'pnum'
+        'table_id', 'guest_name', 'pnum', 'date', 'start_time','end_time'
     ];
 
     public function table()
