@@ -14,7 +14,7 @@ use App\Http\Controllers\TableAvailabilityController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/booking');
 });
 Route::get('/test', function () {
     return view('test');
