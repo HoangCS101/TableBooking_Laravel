@@ -32,18 +32,6 @@
                 <input type="text" class="form-control" id="table_id" name='table_id' placeholder="Enter Table Number">
             </div>
             <div class="form-group">
-                <label for="date">Date</label>
-                <input id="date" class="form-control" type="date" />
-            </div>
-            <div class="form-group">
-                <label for="start_time">Start</label>
-                <input id="start_time" class="form-control" type="time" />
-            </div>
-            <div class="form-group">
-                <label for="end_time">End</label>
-                <input id="end_time" class="form-control" type="time" />
-            </div>
-            <!-- <div class="form-group">
                 <label for="datePicker">Date + Arrival time</label>
                 <div class='input-group date' id='datetimepicker'>
                     <input type='text' name='date' class="form-control" />
@@ -60,7 +48,7 @@
                         <span class="glyphicon glyphicon-time"></span>
                     </span>
                 </div>
-            </div> -->
+            </div>
         </div>
 
         <div class="card-footer">
@@ -75,8 +63,8 @@
 @push('css')
 {{-- Add here extra stylesheets --}}
 {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css"> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
 @endpush
 
 {{-- Push extra scripts --}}
@@ -85,17 +73,12 @@
 <script>
     console.log("Hi, I'm using the Laravel-AdminLTE package!");
 </script>
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
 
-<!-- <script type="text/javascript">
-    $(function() {
-        $('#datetimepicker').datetimepicker();
-    });
-</script> -->
-<!-- <script type="text/javascript">
+<script type="text/javascript">
     $(function() {
         $('#datetimepicker').datetimepicker({
             icons: {
@@ -127,5 +110,5 @@
             defaultDate: moment().startOf('day').add(1, 'hours'),
         });
     });
-</script> -->
+</script>
 @endpush

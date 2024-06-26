@@ -16,9 +16,9 @@ return new class extends Migration
             $table->foreignId('table_id')->constrained()->onDelete('cascade');
             $table->string('guest_name');
             $table->string('pnum');
-            $table->date('date')->nullable();
-            $table->time('start_time')->nullable();
-            $table->time('end_time')->nullable();
+            $table->date('date');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->timestamps();
 
             // $table->unique(['table_id', 'date', 'time']);
