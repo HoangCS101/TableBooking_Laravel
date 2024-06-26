@@ -13,28 +13,24 @@
 
 <table id="myTable" class="display">
     <thead>
-        <td>TableID</td>
+        <td>ID</td>
         <td>Name</td>
-        <td>PhoneNum</td>
-        <td>Date</td>
-        <td>Start</td>
-        <td>End</td>
+        <td>Created At</td>
+        <td>Updated At</td>
     </thead>
 
     <tbody>
         @foreach( $todo as $t )
         <tr>
-            <td>{{ $t->table_id }}</td>
-            <td class="inner-table">{{ $t->guest_name }}</td>
-            <td class="inner-table">{{ $t->pnum }}</td>
-            <td class="inner-table">{{ $t->date }}</td>
-            <td class="inner-table">{{ $t->start_time }}</td>
-            <td class="inner-table">{{ $t->end_time }}</td>
+            <td>{{ $t->id }}</td>
+            <td class="inner-table">{{ $t->name }}</td>
+            <td class="inner-table">{{ $t->created_at }}</td>
+            <td class="inner-table">{{ $t->updated_at }}</td>
         </tr>
         @endforeach
     </tbody>
 </table>
-    @stop
+@stop
 
 {{-- Push extra CSS --}}
 

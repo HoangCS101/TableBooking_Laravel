@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Table;
 
 class TableController extends Controller
 {
@@ -11,7 +12,9 @@ class TableController extends Controller
      */
     public function index()
     {
-        //
+        $todos = Table::all();
+
+        return view('listtable', ['todo' => $todos]);
     }
 
     /**
@@ -19,7 +22,7 @@ class TableController extends Controller
      */
     public function create()
     {
-        //
+        return view('createtable');
     }
 
     /**
@@ -27,7 +30,10 @@ class TableController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $todo = new Table();
+        $todo->name = $request->input('name');
+        $todo->save();
+        return redirect('/table');
     }
 
     /**

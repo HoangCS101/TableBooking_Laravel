@@ -306,21 +306,34 @@ return [
         ],
 
         // Sidebar items:
-        [
-            'type' => 'sidebar-menu-search',
-            'text' => 'search',
-        ],
+        // [
+        //     'type' => 'sidebar-menu-search',
+        //     'text' => 'search',
+        // ],
         [
             'text' => 'blog',
             'url' => 'admin/blog',
             'can' => 'manage-blog',
         ],
         [
-            'text' => 'pages',
-            'url' => 'admin/pages',
-            'icon' => 'far fa-fw fa-file',
-            'label' => 4,
-            'label_color' => 'success',
+            'text' => 'Bookings',
+            'url' => 'booking',
+            'icon' => 'far fa-fw fa-calendar-alt',
+        ],
+        [
+            'text' => 'Tables',
+            'url' => 'table',
+            'icon' => 'fas fa-fw fa-concierge-bell',
+        ],
+        [
+            'text' => 'New Booking',
+            'url' => 'booking/create',
+            'icon' => 'fas fa-fw fa-plus',
+        ],
+        [
+            'text' => 'Add Table',
+            'url' => 'table/create',
+            'icon' => 'fas fa-fw fa-plus',
         ],
         ['header' => 'account_settings'],
         [

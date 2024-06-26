@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TableAvailabilityController;
+use App\Http\Controllers\TableController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,7 +17,5 @@ use App\Http\Controllers\TableAvailabilityController;
 Route::get('/', function () {
     return redirect('/booking');
 });
-Route::get('/test', function () {
-    return view('test');
-});
 Route::resource('/booking', TableAvailabilityController::class);
+Route::resource('/table', TableController::class);
