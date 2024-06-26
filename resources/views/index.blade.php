@@ -34,6 +34,7 @@
         @endforeach
     </tbody>
 </table>
+<a href="{{ route('booking.create') }}" class="btn btn-block bg-gradient-primary">New</a>
 @stop
 
 {{-- Push extra CSS --}}
