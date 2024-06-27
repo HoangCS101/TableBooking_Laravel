@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\TableAvailability;
+use App\Models\Table;
 
 class TableAvailabilityController extends Controller
 {
@@ -14,7 +15,7 @@ class TableAvailabilityController extends Controller
     {
         $todos = TableAvailability::all();
 
-        return view('index', ['todo' => $todos]);
+        return view('booking', ['todo' => $todos]);
     }
 
     /**
@@ -22,7 +23,7 @@ class TableAvailabilityController extends Controller
      */
     public function create()
     {
-        return view('test');
+        return view('reservation');
     }
 
     /**
@@ -33,35 +34,9 @@ class TableAvailabilityController extends Controller
         $todo = new TableAvailability();
         $todo->guest_name = $request->input('name');
         $todo->pnum = $request->input('phone_num');
-        $todo->table_id = $request->input('table_id');
-
-        // Split Date and Time
-        $dateTimeString = $request->input('date');
-        list($datePart, $timePart) = explode(' ', $dateTimeString, 2);
-        $dateObj = \DateTime::createFromFormat('d/m/Y', $datePart);
-        $timeObj = \DateTime::createFromFormat('H:i', $timePart);
-
-        // Get the period from the form input (in HH:mm format)
-        $period = $request->input('period');
-
-        // Parse hours and minutes from the period
-        list($hours, $minutes) = explode(':', $period);
-        $hours = (int) $hours;
-        $minutes = (int) $minutes;
-
-        // Clone the original time object to manipulate
-        $timeGo = clone $timeObj;
-
-        // Add hours and minutes to the time object
-        $timeGo->modify("+$hours hours");
-        $timeGo->modify("+$minutes minutes");
-
-        // Format the new time after modification
-        $formattedNewTime = $timeGo->format('H:i');
-
-        $todo->date = $dateObj;
-        $todo->start_time = $timeObj;
-        $todo->end_time = $formattedNewTime;
+        $todo->table_id = $request->input('AT');
+        $todo->date = $request->input('date');
+        $todo->time_slot = $request->input('time_slot');
 
         $todo->save();
         return redirect('/booking');
@@ -97,5 +72,24 @@ class TableAvailabilityController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function filter(string $date, string $timeslot) {
+        // return "Filtering for $date and $timeslot";
+        $bookedTableIds = TableAvailability::where('date', $date)
+            ->where('time_slot', $timeslot)
+            ->pluck('table_id')
+            ->toArray();
+
+        // Get tables that are NOT in the $bookedTableIds array
+        $availableTables = Table::whereNotIn('id', $bookedTableIds)
+            ->select('id', 'name')
+            ->get();
+
+        $options = '';
+        foreach ($availableTables as $table) {
+            $options .= '<option value="' . $table->id . '">' . $table->name . '</option>';
+        }
+        echo $options;
     }
 }

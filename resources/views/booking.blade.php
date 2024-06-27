@@ -2,14 +2,14 @@
 
 {{-- Customize layout sections --}}
 
-@section('subtitle', 'Welcome')
-@section('content_header_title', 'Home')
-@section('content_header_subtitle', 'Welcome')
+@section('subtitle', 'Bookings List')
+@section('content_header_title', 'Dashboard')
+@section('content_header_subtitle', 'Bookings')
 
 {{-- Content body: main page content --}}
 
 @section('content_body')
-<p>Welcome to this beautiful admin panel.</p>
+<p>View Booking List here!</p>
 
 <table id="myTable" class="display">
     <thead>
@@ -17,8 +17,7 @@
         <td>Name</td>
         <td>PhoneNum</td>
         <td>Date</td>
-        <td>Start</td>
-        <td>End</td>
+        <td>Timeslot</td>
     </thead>
 
     <tbody>
@@ -28,8 +27,7 @@
             <td class="inner-table">{{ $t->guest_name }}</td>
             <td class="inner-table">{{ $t->pnum }}</td>
             <td class="inner-table">{{ $t->date }}</td>
-            <td class="inner-table">{{ $t->start_time }}</td>
-            <td class="inner-table">{{ $t->end_time }}</td>
+            <td class="inner-table">{{ $t->time_slot }}</td>
         </tr>
         @endforeach
     </tbody>

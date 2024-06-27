@@ -11,33 +11,6 @@ class TableAvailabilitySeeder extends Seeder
 {
     public function run()
     {
-        // Example data for table_availabilities
-        $availabilities = [
-            [
-                'table_id' => 1,
-                'guest_name' => 'John Doe',
-                'pnum' => '555-1234',
-                'date' => '2024-06-30',
-                'start_time' => '14:00:00',
-                'end_time' => '17:00:00',
-            ],
-            [
-                'table_id' => 2,
-                'guest_name' => 'Jane Smith',
-                'pnum' => '555-5678',
-                'date' => '2024-07-01',
-                'start_time' => '16:30:00',
-                'end_time' => '17:30:00',
-            ],
-            // Add more availabilities as needed
-        ];
-
-        // Insert data into table_availabilities table
-        foreach ($availabilities as $data) {
-            // Make sure table_id exists in the 'tables' table
-            if (Table::find($data['table_id'])) {
-                TableAvailability::create($data);
-            }
-        }
+        TableAvailability::factory(10)->create();
     }
 }

@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class TableAvailability extends Model
 {
+    use HasFactory;
+    
     protected $fillable = [
-        'table_id', 'guest_name', 'pnum', 'date', 'start_time','end_time'
+        'table_id', 'guest_name', 'pnum', 'date', 'time_slot'
     ];
 
     public function table()

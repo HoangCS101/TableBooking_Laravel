@@ -2,14 +2,14 @@
 
 {{-- Customize layout sections --}}
 
-@section('subtitle', 'Welcome')
-@section('content_header_title', 'Home')
-@section('content_header_subtitle', 'Welcome')
+@section('subtitle', 'Table List')
+@section('content_header_title', 'Dashboard')
+@section('content_header_subtitle', 'Tables')
 
 {{-- Content body: main page content --}}
 
 @section('content_body')
-<p>Welcome to this beautiful admin panel.</p>
+<p>List of Tables.</p>
 
 <table id="myTable" class="display">
     <thead>

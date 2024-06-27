@@ -19,3 +19,4 @@ Route::get('/', function () {
 });
 Route::resource('/booking', TableAvailabilityController::class);
 Route::resource('/table', TableController::class);
+Route::get('/filter/{date}/{timeslot}', [TableAvailabilityController::class, 'filter']);
