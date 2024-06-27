@@ -338,14 +338,14 @@ return [
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
-            'url' => 'admin/settings',
+            'url' => 'profile',
             'icon' => 'fas fa-fw fa-user',
         ],
-        [
-            'text' => 'change_password',
-            'url' => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
-        ],
+        // [
+        //     'text' => 'change_password',
+        //     'url' => 'admin/settings',
+        //     'icon' => 'fas fa-fw fa-lock',
+        // ],
         // [
         //     'text' => 'multilevel',
         //     'icon' => 'fas fa-fw fa-share',
@@ -384,22 +384,22 @@ return [
         //         ],
         //     ],
         // ],
-        ['header' => 'labels'],
-        [
-            'text' => 'important',
-            'icon_color' => 'red',
-            'url' => '#',
-        ],
-        [
-            'text' => 'warning',
-            'icon_color' => 'yellow',
-            'url' => '#',
-        ],
-        [
-            'text' => 'information',
-            'icon_color' => 'cyan',
-            'url' => '#',
-        ],
+        // ['header' => 'labels'],
+        // [
+        //     'text' => 'important',
+        //     'icon_color' => 'red',
+        //     'url' => '#',
+        // ],
+        // [
+        //     'text' => 'warning',
+        //     'icon_color' => 'yellow',
+        //     'url' => '#',
+        // ],
+        // [
+        //     'text' => 'information',
+        //     'icon_color' => 'cyan',
+        //     'url' => '#',
+        // ],
     ],
 
     /*
