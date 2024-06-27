@@ -323,12 +323,12 @@ return [
         [
             'text' => 'Tables',
             'url' => 'table',
-            'icon' => 'fas fa-fw fa-concierge-bell',
+            'icon' => 'fas fa-fw fa-utensils',
         ],
         [
-            'text' => 'New Booking',
+            'text' => 'Reservation',
             'url' => 'booking/create',
-            'icon' => 'fas fa-fw fa-plus',
+            'icon' => 'fas fa-fw fa-concierge-bell',
         ],
         [
             'text' => 'Add Table',

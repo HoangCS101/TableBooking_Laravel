@@ -4,7 +4,7 @@
 
 @section('subtitle', 'Reservation')
 @section('content_header_title', 'Dashboard')
-@section('content_header_subtitle', 'New Booking')
+@section('content_header_subtitle', 'Reservation')
 
 {{-- Content body: main page content --}}
 
