@@ -17,13 +17,17 @@
     </head>
     <body class="antialiased">
         <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
+            <!-- Here we simply check if there is route called login the the application, just go see in route:list -->
             @if (Route::has('login'))
+                <!-- Til here can u execute whats inside, include the html part, so without 'login' route, no buttons -->
                 <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
+                    <!-- Checks if the user is authenticated -->
                     @auth
                         <a href="{{ url('/booking') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Logged in?->Get in!</a>
                     @else
+                        <!-- route('login') -> web.php -> auth.php -->
                         <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
-
+                        <!-- Same as above, if there is a route 'register' ... -->
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
                         @endif
