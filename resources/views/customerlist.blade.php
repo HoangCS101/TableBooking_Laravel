@@ -2,34 +2,30 @@
 
 {{-- Customize layout sections --}}
 
-@section('subtitle', 'Bookings List')
+@section('subtitle', 'Customer List')
 @section('content_header_title', 'Dashboard')
-@section('content_header_subtitle', 'Bookings')
+@section('content_header_subtitle', 'Customer')
 
 {{-- Content body: main page content --}}
 
 @section('content_body')
-<p>View Booking List here!</p>
+<p>List of Customers.</p>
 
 <table id="myTable" class="display">
     <thead>
-        <td>BookingID</td>
-        <td>TableName</td>
+        <td>ID</td>
         <td>Name</td>
-        <td>PhoneNum</td>
-        <td>Date</td>
-        <td>Timeslot</td>
+        <td>Email</td>
+        <td>Join Since</td>
     </thead>
 
     <tbody>
         @foreach( $todo as $t )
         <tr>
             <td>{{ $t->id }}</td>
-            <td class="inner-table">{{ $t->table_name }}</td>
-            <td class="inner-table">{{ $t->guest_name }}</td>
-            <td class="inner-table">{{ $t->pnum }}</td>
-            <td class="inner-table">{{ $t->date }}</td>
-            <td class="inner-table">{{ $t->time_slot }}</td>
+            <td class="inner-table">{{ $t->name }}</td>
+            <td class="inner-table">{{ $t->email }}</td>
+            <td class="inner-table">{{ $t->created_at }}</td>
         </tr>
         @endforeach
     </tbody>
@@ -52,16 +48,8 @@
 </script>
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
 <script>
-    // $(document).ready(function() {
-    //     $('#myTable').DataTable();
-    // });
-    let table = new DataTable('#myTable');
-
-    table.on('click', 'tbody tr', function() {
-        let data = table.row(this).data();
-
-        // alert('You clicked on ' + data[0] + "'s row");
-        window.location.href = "{{ url('booking') }}/" + data[0];
+    $(document).ready(function() {
+        $('#myTable').DataTable();
     });
 </script>
 @endpush

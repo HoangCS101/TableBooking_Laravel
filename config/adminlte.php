@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'TableBooking',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -324,6 +324,13 @@ return [
             'text' => 'Tables',
             'url' => 'table',
             'icon' => 'fas fa-fw fa-utensils',
+            'can' => 'admin',
+        ],
+        [
+            'text' => 'Customers',
+            'url' => 'user',
+            'icon' => 'fas fa-fw fa-address-book',
+            'can' => 'admin',
         ],
         [
             'text' => 'Reservation',
@@ -334,6 +341,7 @@ return [
             'text' => 'Add Table',
             'url' => 'table/create',
             'icon' => 'fas fa-fw fa-plus',
+            'can' => 'admin',
         ],
         ['header' => 'account_settings'],
         [

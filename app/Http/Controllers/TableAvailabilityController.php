@@ -11,9 +11,16 @@ class TableAvailabilityController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $todos = TableAvailability::all();
+        if ($request->user()->role_id == '1') $todos = TableAvailability::all();
+        else $todos = TableAvailability::where('user_id', $request->user()->id)->get();
+
+        // Add table_name to each $todos item
+        $todos->transform(function ($item) {
+            $item->table_name = $item->table->name; // Assuming 'name' is the column in the 'tables' table
+            return $item;
+        });
 
         return view('booking', ['todo' => $todos]);
     }
@@ -37,6 +44,7 @@ class TableAvailabilityController extends Controller
         $todo->table_id = $request->input('AT');
         $todo->date = $request->input('date');
         $todo->time_slot = $request->input('time_slot');
+        $todo->user_id = $request->user()->id;
 
         $todo->save();
         return redirect('/booking');
@@ -45,9 +53,17 @@ class TableAvailabilityController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $todos = TableAvailability::where('id', $id)->get();
+
+        // Add table_name to each $todos item
+        $todos->transform(function ($item) {
+            $item->table_name = $item->table->name; // Assuming 'name' is the column in the 'tables' table
+            return $item;
+        });
+
+        return view('table', ['todo' => $todos]);
     }
 
     /**
@@ -74,7 +90,8 @@ class TableAvailabilityController extends Controller
         //
     }
 
-    public function filter(string $date, string $timeslot) {
+    public function filter(string $date, string $timeslot)
+    {
         // return "Filtering for $date and $timeslot";
         $bookedTableIds = TableAvailability::where('date', $date)
             ->where('time_slot', $timeslot)

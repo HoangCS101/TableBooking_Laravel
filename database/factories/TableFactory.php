@@ -16,11 +16,12 @@ class TableFactory extends Factory
      */
     public function definition(): array
     {
-        $alphabet = range('A', 'Z');
-        $index = $this->faker->numberBetween(0, 25); // Random index from A to Z
-        $tableName = 'Table ' . $alphabet[$index];
+        static $alphabet = range('A', 'Z'); // Static array of letters A to Z
+
+        // Get the first letter from the alphabet array and remove it
+        $tableName = 'Table ' . array_shift($alphabet);
+
         return [
-            //
             'name' => $tableName,
         ];
     }
