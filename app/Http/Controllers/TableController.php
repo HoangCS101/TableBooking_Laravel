@@ -65,6 +65,18 @@ class TableController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            // Find the record with the given ID
+            $todo = Table::findOrFail($id);
+            
+            // Delete the record
+            $todo->delete();
+    
+            // Optionally, you can return a response indicating success
+            return response()->json(['message' => 'Record deleted successfully'], 200);
+        } catch (\Exception $e) {
+            // Handle any exceptions, such as if the record does not exist
+            return response()->json(['error' => 'Failed to delete record: ' . $e->getMessage()], 500);
+        }
     }
 }

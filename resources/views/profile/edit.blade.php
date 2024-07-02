@@ -1,3 +1,16 @@
+@extends('layout.app')
+
+{{-- Customize layout sections --}}
+
+@section('subtitle', 'Personal Profile')
+@section('content_header_title', 'Dashboard')
+@section('content_header_subtitle', 'Profile')
+
+{{-- Content body: main page content --}}
+
+@section('content_body')
+<p>Manage your very own profile.</p>
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -27,3 +40,35 @@
         </div>
     </div>
 </x-app-layout>
+
+@stop
+
+{{-- Push extra CSS --}}
+
+@push('css')
+{{-- Add here extra stylesheets --}}
+{{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
+<link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
+@endpush
+
+{{-- Push extra scripts --}}
+
+@push('js')
+<script>
+    console.log("Hi, I'm using the Laravel-AdminLTE package!");
+</script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+<script>
+    // $(document).ready(function() {
+    //     $('#myTable').DataTable();
+    // });
+    let table = new DataTable('#myTable');
+
+    table.on('click', 'tbody tr', function() {
+        let data = table.row(this).data();
+
+        // alert('You clicked on ' + data[0] + "'s row");
+        window.location.href = "{{ url('booking') }}/" + data[0];
+    });
+</script>
+@endpush

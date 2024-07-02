@@ -95,7 +95,8 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-secondary border" onclick="clicked('{{ $t->id }}')">Delete</button>
+            <button type="button" class="btn btn-danger border" onclick="clicked('{{ $t->id }}')">Delete</button>
+            <button type="button" class="btn btn-secondary border">Pay</button>
         </div>
     </div>
 </div>

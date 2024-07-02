@@ -28,6 +28,12 @@ class DatabaseSeeder extends Seeder
             'role_id' => '1',
             'password' => 'adminpass',
         ]);
+        User::create([
+            'name' => 'Hoang Le',
+            'email' => 'hoang.le@vietlink.jp',
+            'role_id' => '2',
+            'password' => '11111111',
+        ]);
         $this->call(TablesSeeder::class);
         $this->call(TableAvailabilitySeeder::class);
     }
