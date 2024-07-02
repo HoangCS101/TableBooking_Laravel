@@ -79,7 +79,18 @@ class TableAvailabilityController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $todo = TableAvailability::find($id);
+        $todo->guest_name = $request->input('name');
+        $todo->pnum = $request->input('phone_num');
+        $todo->table_id = $request->input('AT');
+        $todo->date = $request->input('date');
+        $todo->time_slot = $request->input('time_slot');
+        // $todo->user_id = $request->user()->id;
+
+        $todo->update();
+        // TableAvailability::where('id', $id)
+        //   ->update(['guest_name' => $request->input('name')]);
+        return redirect('/booking/'.$id);
     }
 
     /**
@@ -87,7 +98,19 @@ class TableAvailabilityController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            // Find the record with the given ID
+            $todo = TableAvailability::findOrFail($id);
+            
+            // Delete the record
+            $todo->delete();
+    
+            // Optionally, you can return a response indicating success
+            return response()->json(['message' => 'Record deleted successfully'], 200);
+        } catch (\Exception $e) {
+            // Handle any exceptions, such as if the record does not exist
+            return response()->json(['error' => 'Failed to delete record: ' . $e->getMessage()], 500);
+        }
     }
 
     public function filter(string $date, string $timeslot)

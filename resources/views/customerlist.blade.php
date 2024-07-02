@@ -4,7 +4,7 @@
 
 @section('subtitle', 'Customer List')
 @section('content_header_title', 'Dashboard')
-@section('content_header_subtitle', 'Customer')
+@section('content_header_subtitle', 'Customers')
 
 {{-- Content body: main page content --}}
 

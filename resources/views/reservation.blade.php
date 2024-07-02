@@ -15,7 +15,6 @@
         <h3 class="card-title">Reservation Form</h3>
     </div>
 
-
     <form method="POST" action="/booking">
         @csrf
         <div class="card-body">

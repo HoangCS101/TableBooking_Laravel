@@ -23,6 +23,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::post('/booking/{id}', [TableAvailabilityController::class, 'update'])->middleware(['auth', 'verified']);
 Route::resource('/booking', TableAvailabilityController::class)->middleware(['auth', 'verified']);
 // here you cant really name the route 'booking' since its a 'resource' route -> many types of request with varied parameter amount, check the below profile auth middleware.
 
