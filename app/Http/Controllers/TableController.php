@@ -32,6 +32,8 @@ class TableController extends Controller
     {
         $todo = new Table();
         $todo->name = $request->input('name');
+        $todo->description = $request->input('description');
+        $todo->picture_url = $request->input('picture_url');
         $todo->save();
         return redirect('/table');
     }
@@ -41,7 +43,11 @@ class TableController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $table = Table::findOrFail($id);
+        $preview = '';
+        $preview .= '<img src="' . $table->picture_url. '" alt="Photo 2" class="img-fluid" style="width: 100%; height: auto;">';
+        $preview .= '<p style="margin-top: 20px"><strong>Description: </strong>' . $table->description . '</p>';
+        echo $preview;
     }
 
     /**
@@ -68,10 +74,10 @@ class TableController extends Controller
         try {
             // Find the record with the given ID
             $todo = Table::findOrFail($id);
-            
+
             // Delete the record
             $todo->delete();
-    
+
             // Optionally, you can return a response indicating success
             return response()->json(['message' => 'Record deleted successfully'], 200);
         } catch (\Exception $e) {

@@ -23,7 +23,14 @@
                 <label for="name">Table Name</label>
                 <input type="text" class="form-control" id="name" name='name' placeholder="Enter Table Name">
             </div>
-            
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" rows="3" id="description" name='description' placeholder="Add Description"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="picture_url">Table Name</label>
+                <input type="text" class="form-control" id="picture_url" name='picture_url' placeholder="Add Picture URL">
+            </div>
         </div>
 
         <div class="card-footer">

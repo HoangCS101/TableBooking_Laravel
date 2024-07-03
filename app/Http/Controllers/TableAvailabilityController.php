@@ -60,6 +60,7 @@ class TableAvailabilityController extends Controller
         // Add table_name to each $todos item
         $todos->transform(function ($item) {
             $item->table_name = $item->table->name; // Assuming 'name' is the column in the 'tables' table
+            $item->picture_url = $item->table->picture_url;
             return $item;
         });
 

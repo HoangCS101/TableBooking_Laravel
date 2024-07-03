@@ -10,7 +10,7 @@ class Table extends Model
     use HasFactory;
     
     protected $fillable = [
-        'name',
+        'name', 'description', 'picture_url'
     ];
 
     public function availability()

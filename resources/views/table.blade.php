@@ -15,7 +15,7 @@
 <div class="container">
     <div class="col-sm-4">
         <div class="position-relative">
-            <img src="https://static.rigg.uk/Files/casestudies/bistrotpierretables/sz/w960/bistrolargeroundrestauranttablewoodtopmetalbase.jpg" alt="Photo 2" class="img-fluid">
+            <img src="{{ $t->picture_url }}" alt="Photo 2" class="img-fluid">
             <div class="ribbon-wrapper ribbon-xl">
                 <div class="ribbon bg-secondary text-lg">
                     {{ $t->time_slot }}

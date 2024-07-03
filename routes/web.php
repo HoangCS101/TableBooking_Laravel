@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\ProviderController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TableAvailabilityController;
@@ -22,6 +23,10 @@ use App\Http\Controllers\UserController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/auth/{provider}', [ProviderController::class, 'redirect']);
+ 
+Route::get('/auth/{provider}/callback', [ProviderController::class, 'callback']);
 
 Route::post('/booking/{id}', [TableAvailabilityController::class, 'update'])->middleware(['auth', 'verified']);
 Route::resource('/booking', TableAvailabilityController::class)->middleware(['auth', 'verified']);

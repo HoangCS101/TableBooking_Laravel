@@ -15,8 +15,8 @@
     <thead>
         <td>ID</td>
         <td>Name</td>
-        <td>Created At</td>
-        <td>Updated At</td>
+        <td>Description</td>
+        <td>Picture URL</td>
     </thead>
 
     <tbody>
@@ -24,8 +24,8 @@
         <tr>
             <td>{{ $t->id }}</td>
             <td class="inner-table">{{ $t->name }}</td>
-            <td class="inner-table">{{ $t->created_at }}</td>
-            <td class="inner-table">{{ $t->updated_at }}</td>
+            <td class="inner-table">{{ $t->description }}</td>
+            <td class="inner-table">{{ $t->picture_url }}</td>
         </tr>
         @endforeach
     </tbody>
@@ -41,7 +41,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                <img src="https://static.rigg.uk/Files/casestudies/bistrotpierretables/sz/w960/bistrolargeroundrestauranttablewoodtopmetalbase.jpg" alt="Photo 2" style="width: 100%;" class="img-fluid">
+                <img src="" alt="Photo 2" style="width: 100%;" class="img-fluid">
+                <div class="mt-2">
+                    <a href="#" id="pictureLink" target="_blank">View Full Image</a>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -88,6 +91,7 @@
 </script> -->
 <script>
     let globalVar;
+
     function clicked() {
         // console.log('Clicked ID:', id);
         // AJAX request to delete resource
@@ -116,14 +120,25 @@
         }
     }
     $(document).ready(function() {
-        let table = $('#myTable').DataTable();
+        let table = $('#myTable').DataTable({
+            "columnDefs": [{
+                "targets": 3, // Index of the "Picture URL" column
+                "render": function(data, type, row, meta) {
+                    if (data.length > 30) { // Adjust the threshold as needed
+                        return data.substr(0, 30) + '...';
+                    } else {
+                        return data;
+                    }
+                }
+            }]
+        });
 
         $('#myTable tbody').on('mouseenter', 'tr', function(e) {
             let row = table.row(this).node();
             let data = table.row(this).data();
 
             // Create and position the hovering window
-            let $hoverWindow = $('<div class="hover-window"><img src="https://static.rigg.uk/Files/casestudies/bistrotpierretables/sz/w960/bistrolargeroundrestauranttablewoodtopmetalbase.jpg" alt="Photo 2" class="img-fluid" style="width: 200px; height: auto;"></div>');
+            let $hoverWindow = $('<div class="hover-window"><img src="' + data[3] + '" alt="Photo 2" class="img-fluid" style="width: 200px; height: auto;"></div>');
             $hoverWindow.appendTo('body'); // Append to body to make it floating
 
             // Position the hovering window relative to the mouse cursor
@@ -146,6 +161,13 @@
             let data = table.row(this).data();
             $('#exampleModalLabel').text(data[1]);
             globalVar = data[0];
+
+            let $modalImage = $('#exampleModal').find('.modal-body img');
+            $modalImage.attr('src', data[3]);
+
+            let $modalLink = $('#exampleModal').find('#pictureLink');
+            $modalLink.attr('href', data[3]);
+
             let modal = new bootstrap.Modal(document.getElementById('exampleModal'));
             modal.show();
         });
