@@ -17,19 +17,19 @@ class ProviderController extends Controller
     public function callback($provider)
     {
         $puser = Socialite::driver($provider)->user();
-        $user = User::where('google', $puser->getId())->first();
+        $user = User::where('google_id', $puser->getId())->first();
 
         if (!$user) {
             $new = User::create([
                 'name' => $puser->getName(),
                 'email' => $puser->getEmail(),
-                'google_id' => $puser->$puser->getID()
+                'google_id' => $puser->getID()
             ]);
             Auth::login($new);
-            return redirect('/');
+            return redirect('/booking');
         } else {
             Auth::login($user);
-            return redirect('/');
+            return redirect('/booking');
         }
     }
 }
