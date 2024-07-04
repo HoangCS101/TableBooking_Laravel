@@ -12,24 +12,42 @@ class ProviderController extends Controller
 {
     public function redirect($provider)
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver($provider)->redirect();
     }
     public function callback($provider)
     {
         $puser = Socialite::driver($provider)->user();
-        $user = User::where('google_id', $puser->getId())->first();
+        if ($provider == 'google') {
+            $user = User::where('google_id', $puser->getId())->first();
 
-        if (!$user) {
-            $new = User::create([
-                'name' => $puser->getName(),
-                'email' => $puser->getEmail(),
-                'google_id' => $puser->getID()
-            ]);
-            Auth::login($new);
-            return redirect('/booking');
-        } else {
-            Auth::login($user);
-            return redirect('/booking');
+            if (!$user) {
+                $new = User::create([
+                    'name' => $puser->getName(),
+                    'email' => $puser->getEmail(),
+                    'google_id' => $puser->getID()
+                ]);
+                Auth::login($new);
+                return redirect('/booking');
+            } else {
+                Auth::login($user);
+                return redirect('/booking');
+            }
+        }
+        else if ($provider == 'facebook') {
+            $user = User::where('facebook_id', $puser->getId())->first();
+
+            if (!$user) {
+                $new = User::create([
+                    'name' => $puser->getName(),
+                    'email' => $puser->getEmail(),
+                    'facebook_id' => $puser->getID()
+                ]);
+                Auth::login($new);
+                return redirect('/booking');
+            } else {
+                Auth::login($user);
+                return redirect('/booking');
+            }
         }
     }
 }
