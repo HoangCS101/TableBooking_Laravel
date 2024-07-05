@@ -29,6 +29,7 @@ return new class extends Migration
                 '07:30 PM - 09:00 PM',
                 '09:00 PM - 10:30 PM',
             ]);
+            $table->enum('state', ['paid', 'not paid'])->default('not paid');
             $table->timestamps();
             $table->foreignId('user_id')->default(1)->constrained()->onDelete('cascade');
         });

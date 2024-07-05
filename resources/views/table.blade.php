@@ -30,7 +30,11 @@
                 <small>Phone Number:</small> {{ $t->pnum }}<br>
                 <small>Reservation Date:</small> {{ $t->date }}<br>
                 <small>Table:</small> {{ $t->table_name }}<br>
-                <small>Payment State:</small> <span class="badge bg-danger">Not Paid</span>
+                <small>Payment State:</small>
+                <?php
+                if ($t->state == 'not paid') echo '<span class="badge bg-danger">Not Paid</span>';
+                else echo '<span class="badge bg-success">Paid</span>';
+                ?>
             </p>
         </div>
         <div class="btn-group d-flex justify-content-between" role="group" aria-label="Basic mixed styles example">
@@ -96,7 +100,34 @@
                 </div>
             </div>
             <button type="button" class="btn btn-danger border" onclick="clicked('{{ $t->id }}')">Delete</button>
-            <button type="button" class="btn btn-secondary border">Pay</button>
+            <?php
+                if ($t->state == 'not paid') echo '<button type="button" class="btn btn-secondary border" data-toggle="modal" data-target="#paymentModal">Pay</button>';
+                else echo '<button type="button" class="btn btn-success border">Paid</button>';
+            ?>
+            <!-- <button type="button" class="btn btn-secondary border" data-toggle="modal" data-target="#paymentModal">Pay</button> -->
+            <!-- Modal -->
+            <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="paymentModalLabel">Choose Payment Method</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ url('payment') }}/{{$t->id}}" method="POST">
+                                @csrf
+                                <input type="hidden" name="" value="">
+                                <button type="submit" class="btn custom-btn btn-lg" name="payUrl">
+                                    <img src="{{ asset('momoicon.png') }}" alt="Momo Icon" class="btn-icon">
+                                    <span class="btn-text">Pay with Momo</span>
+                                    </a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -108,6 +139,48 @@
 @push('css')
 {{-- Add here extra stylesheets --}}
 {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
+<style>
+    .custom-btn {
+        background-color: #c1177c;
+        /* Pinkish red background */
+        border-color: #c1177c;
+        /* Matching border color */
+        color: white;
+        /* White text color */
+        padding: 10px 20px;
+        /* Adjust padding to create space for icon */
+        position: relative;
+        /* Position relative to allow absolute positioning */
+        width: 100%;
+    }
+
+    .custom-btn:hover {
+        background-color: #a00d5f;
+        /* Darker pinkish red on hover */
+        border-color: #a00d5f;
+        /* Matching border color on hover */
+    }
+
+    .custom-btn .btn-icon {
+        position: absolute;
+        /* Position the icon absolutely */
+        left: 2.5px;
+        /* Fixed left position of the icon */
+        top: 50%;
+        /* Align icon vertically */
+        transform: translateY(-50%);
+        /* Center icon vertically */
+        width: 45px;
+        /* Fixed width of the icon */
+        height: auto;
+        /* Fixed height of the icon */
+    }
+
+    .custom-btn .btn-text {
+        padding-left: 40px;
+        /* Adjust padding to create space for the icon */
+    }
+</style>
 @endpush
 
 {{-- Push extra scripts --}}
@@ -144,6 +217,7 @@
                 });
         }
     }
+
     function showTable(str) {
         var timeslot = document.getElementById("TS").value;
         var date = document.getElementById("date").value;
