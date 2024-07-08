@@ -328,15 +328,21 @@ return [
         ],
         [
             'text' => 'Users',
+            'url' => 'user',
             'icon' => 'fas fa-fw fa-address-book',
+            // 'can' => 'admin',
+        ],
+        [
+            'text' => 'Account Management',
+            'icon' => 'fas fa-fw fa-tag',
             'submenu' => [
                 [
                     'text' => 'Roles',
-                    'url' => 'admin/user/roles',
+                    'url' => 'admin/roles',
                 ],
                 [
                     'text' => 'Permissions',
-                    'url' => 'admin/user/permissions',
+                    'url' => 'admin/permissions',
                 ],
             ]
         ],

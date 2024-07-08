@@ -12,7 +12,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $todos = User::where('role_id', 2)->get();
+        // $todos = User::where('role_id', 2)->get();
+        $todos = User::all();
 
         return view('customerlist', ['todo' => $todos]);
     }
