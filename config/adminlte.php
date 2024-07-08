@@ -324,13 +324,21 @@ return [
             'text' => 'Tables',
             'url' => 'table',
             'icon' => 'fas fa-fw fa-utensils',
-            'can' => 'admin',
+            // 'can' => 'admin',
         ],
         [
-            'text' => 'Customers',
-            'url' => 'user',
+            'text' => 'Users',
             'icon' => 'fas fa-fw fa-address-book',
-            'can' => 'admin',
+            'submenu' => [
+                [
+                    'text' => 'Roles',
+                    'url' => 'admin/user/roles',
+                ],
+                [
+                    'text' => 'Permissions',
+                    'url' => 'admin/user/permissions',
+                ],
+            ]
         ],
         [
             'text' => 'Reservation',
@@ -341,7 +349,7 @@ return [
             'text' => 'Add Table',
             'url' => 'table/create',
             'icon' => 'fas fa-fw fa-plus',
-            'can' => 'admin',
+            // 'can' => 'admin',
         ],
         ['header' => 'account_settings'],
         [

@@ -52,6 +52,7 @@
                         <div class="modal-body">
                             <form method="POST" action="{{ url('booking') }}/{{$t->id}}">
                                 @csrf
+                                @method("PUT")
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="name">Name</label>
@@ -101,8 +102,8 @@
             </div>
             <button type="button" class="btn btn-danger border" onclick="clicked('{{ $t->id }}')">Delete</button>
             <?php
-                if ($t->state == 'not paid') echo '<button type="button" class="btn btn-secondary border" data-toggle="modal" data-target="#paymentModal">Pay</button>';
-                else echo '<button type="button" class="btn btn-success border">Paid</button>';
+            if ($t->state == 'not paid') echo '<button type="button" class="btn btn-secondary border" data-toggle="modal" data-target="#paymentModal">Pay</button>';
+            else echo '<button type="button" class="btn btn-success border">Paid</button>';
             ?>
             <!-- <button type="button" class="btn btn-secondary border" data-toggle="modal" data-target="#paymentModal">Pay</button> -->
             <!-- Modal -->

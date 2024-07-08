@@ -102,10 +102,10 @@ class TableAvailabilityController extends Controller
         try {
             // Find the record with the given ID
             $todo = TableAvailability::findOrFail($id);
-            
+
             // Delete the record
             $todo->delete();
-    
+
             // Optionally, you can return a response indicating success
             return response()->json(['message' => 'Record deleted successfully'], 200);
         } catch (\Exception $e) {

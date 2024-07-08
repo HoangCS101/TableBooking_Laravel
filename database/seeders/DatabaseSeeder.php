@@ -20,20 +20,22 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        Role::create(['name' => 'Admin']);
-        Role::create(['name' => 'User']);
-        User::create([
-            'name' => 'Admin',
-            'email' => 'admin@ad.min',
-            'role_id' => '1',
-            'password' => 'adminpass',
-        ]);
-        User::create([
-            'name' => 'Hoang Le',
-            'email' => 'hoang.le@vietlink.jp',
-            'role_id' => '2',
-            'password' => '11111111',
-        ]);
+        // Role::create(['name' => 'Admin']);
+        // Role::create(['name' => 'User']);
+        // User::create([
+        //     'name' => 'Admin',
+        //     'email' => 'admin@ad.min',
+        //     'role_id' => '1',
+        //     'password' => 'adminpass',
+        // ]);
+        // User::create([
+        //     'name' => 'Hoang Le',
+        //     'email' => 'hoang.le@vietlink.jp',
+        //     'role_id' => '2',
+        //     'password' => '11111111',
+        // ]);
+        $this->call(RoleSeeder::class);
+        $this->call(AdminSeeder::class);
         $this->call(TablesSeeder::class);
         $this->call(TableAvailabilitySeeder::class);
     }
