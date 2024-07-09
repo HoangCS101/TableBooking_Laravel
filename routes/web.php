@@ -52,14 +52,20 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->grou
 // This is called by a HTML form, which doesn't really have a PUT method -> make it urself
 // Updates: Turns out @method('PUT') in the form can also do the trick
 
-Route::resource('/booking', TableAvailabilityController::class)->middleware(['auth', 'verified', 'permission:see bookings']);
-// here you cant really name the route 'booking' since its a 'resource' route -> many types of request with varied parameter amount, check the below profile auth middleware.
+Route::middleware(['auth', 'verified', 'permission:manage bookings'])->group(function () {
+    Route::resource('/booking', TableAvailabilityController::class);
+    // here you cant really name the route 'booking' since its a 'resource' route -> many types of request with varied parameter amount, check the below profile auth middleware.
+    Route::get('/booking/filter/{date}/{timeslot}', [TableAvailabilityController::class, 'filter']);
+    Route::get('/booking/preview/{id}', [TableAvailabilityController::class, 'tablePreview']);
 
-Route::resource('/table', TableController::class)->middleware(['auth', 'verified', 'permission:edit tables']);
+    // Payment
+    Route::post('/payment/{id}', [PaymentController::class, 'momopay']);
+    Route::get('/payment/{id}/success', [PaymentController::class, 'pay_succ']);
+});
 
-Route::resource('/user', UserController::class)->middleware(['auth', 'verified']);
+Route::resource('/table', TableController::class)->middleware(['auth', 'verified', 'permission:manage tables']);
 
-Route::get('/filter/{date}/{timeslot}', [TableAvailabilityController::class, 'filter'])->middleware(['auth', 'verified']);
+Route::resource('/user', UserController::class)->middleware(['auth', 'verified', 'permission:manage users']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -67,7 +73,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::post('/payment/{id}', [PaymentController::class, 'momopay']);
-Route::get('/payment/{id}/success', [PaymentController::class, 'pay_succ']);
-
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

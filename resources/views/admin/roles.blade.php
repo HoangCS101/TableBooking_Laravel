@@ -171,14 +171,7 @@
     }
     function togglePermission(perID)
     {
-        // console.log(global + "/" + perID );
         var xhttp= new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                // alert('Success');
-                // console.log(this.responseText);
-            }
-        };
         xhttp.open("GET", "/admin/roles/" + global + "/" + perID, true);
         xhttp.send();
     }
@@ -186,8 +179,6 @@
     $('#P').on('show.bs.modal', function(event) {
         var button = $(event.relatedTarget); // Button that triggered the modal
         var roleId = button.data('id'); // Extract role ID from data-id attribute
-        // console.log("clicked");
-        // Call function to load permissions for this role
         loadPermissions(roleId);
     });
 </script>

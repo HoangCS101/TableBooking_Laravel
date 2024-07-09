@@ -107,7 +107,7 @@
                 document.getElementById("AT").innerHTML = this.responseText;
             }
         };
-        xhttp.open("GET", "/filter" + "/" + encodeURIComponent(date) + "/" + encodeURIComponent(timeslot), true);
+        xhttp.open("GET", "/booking/filter" + "/" + encodeURIComponent(date) + "/" + encodeURIComponent(timeslot), true);
         xhttp.send();
     }
     function preview() {
@@ -120,7 +120,7 @@
                 document.getElementById("preview").innerHTML = this.responseText;
             }
         };
-        xhttp.open("GET", "/table" + "/" + table_id, true);
+        xhttp.open("GET", "/booking/preview/" + table_id, true);
         xhttp.send();
     }
 </script>

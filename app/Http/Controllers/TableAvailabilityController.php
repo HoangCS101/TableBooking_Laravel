@@ -13,7 +13,7 @@ class TableAvailabilityController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->user()->role_id == '1') $todos = TableAvailability::all();
+        if ($request->user()->hasRole('admin')) $todos = TableAvailability::all();
         else $todos = TableAvailability::where('user_id', $request->user()->id)->get();
 
         // Add table_name to each $todos item
@@ -132,5 +132,13 @@ class TableAvailabilityController extends Controller
             $options .= '<option value="' . $table->id . '">' . $table->name . '</option>';
         }
         echo $options;
+    }
+
+    public function tablePreview(string $id) {
+        $table = Table::findOrFail($id);
+        $preview = '';
+        $preview .= '<img src="' . $table->picture_url. '" alt="Photo 2" class="img-fluid" style="width: 100%; height: auto;">';
+        $preview .= '<p style="margin-top: 20px"><strong>Description: </strong>' . $table->description . '</p>';
+        echo $preview;
     }
 }

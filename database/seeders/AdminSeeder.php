@@ -20,5 +20,11 @@ class AdminSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => 'adminpass',
         ])->assignRole('admin');
+        User::create([
+            'name' => 'random',
+            'email' => 'random@ran.dom',
+            'email_verified_at' => now(),
+            'password' => 'password',
+        ])->assignRole('user');
     }
 }

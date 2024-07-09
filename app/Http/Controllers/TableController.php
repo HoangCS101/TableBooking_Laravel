@@ -43,11 +43,7 @@ class TableController extends Controller
      */
     public function show(string $id)
     {
-        $table = Table::findOrFail($id);
-        $preview = '';
-        $preview .= '<img src="' . $table->picture_url. '" alt="Photo 2" class="img-fluid" style="width: 100%; height: auto;">';
-        $preview .= '<p style="margin-top: 20px"><strong>Description: </strong>' . $table->description . '</p>';
-        echo $preview;
+        
     }
 
     /**
