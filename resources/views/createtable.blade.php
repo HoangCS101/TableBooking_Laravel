@@ -28,7 +28,11 @@
                 <textarea class="form-control" rows="3" id="description" name='description' placeholder="Add Description"></textarea>
             </div>
             <div class="form-group">
-                <label for="picture_url">Table Name</label>
+                <label for="price">Price (VND)</label>
+                <input type="text" class="form-control" id="price" name='price' placeholder="Add Pricing">
+            </div>
+            <div class="form-group">
+                <label for="picture_url">Picture URL</label>
                 <input type="text" class="form-control" id="picture_url" name='picture_url' placeholder="Add Picture URL">
             </div>
         </div>

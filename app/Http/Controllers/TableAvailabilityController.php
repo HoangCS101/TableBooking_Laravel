@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\TableAvailability;
 use App\Models\Table;
+use App\Models\Timeslot;
 
 class TableAvailabilityController extends Controller
 {
@@ -19,6 +20,7 @@ class TableAvailabilityController extends Controller
         // Add table_name to each $todos item
         $todos->transform(function ($item) {
             $item->table_name = $item->table->name; // Assuming 'name' is the column in the 'tables' table
+            $item->time_slot = \App\Models\Timeslot::where('id', $item->timeslot_id)->value('slot_name');
             return $item;
         });
 
@@ -38,12 +40,20 @@ class TableAvailabilityController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'phone_num' => 'required|string|max:10',
+            'date' => 'required|date',
+            'time_slot' => 'required',
+            'AT' => 'required',
+        ]);
         $todo = new TableAvailability();
         $todo->guest_name = $request->input('name');
         $todo->pnum = $request->input('phone_num');
         $todo->table_id = $request->input('AT');
         $todo->date = $request->input('date');
-        $todo->time_slot = $request->input('time_slot');
+        $todo->timeslot_id = $request->input('time_slot');
+        $todo->total = intval(Table::where('id',$todo->table_id)->value('price')) + intval(Timeslot::where('id',$todo->timeslot_id)->value('price'));
         $todo->user_id = $request->user()->id;
 
         $todo->save();
@@ -61,6 +71,7 @@ class TableAvailabilityController extends Controller
         $todos->transform(function ($item) {
             $item->table_name = $item->table->name; // Assuming 'name' is the column in the 'tables' table
             $item->picture_url = $item->table->picture_url;
+            $item->time_slot = \App\Models\Timeslot::where('id', $item->timeslot_id)->value('slot_name');
             return $item;
         });
 
@@ -118,7 +129,7 @@ class TableAvailabilityController extends Controller
     {
         // return "Filtering for $date and $timeslot";
         $bookedTableIds = TableAvailability::where('date', $date)
-            ->where('time_slot', $timeslot)
+            ->where('timeslot_id', $timeslot)
             ->pluck('table_id')
             ->toArray();
 

@@ -30,7 +30,7 @@
                 <small>Phone Number:</small> {{ $t->pnum }}<br>
                 <small>Reservation Date:</small> {{ $t->date }}<br>
                 <small>Table:</small> {{ $t->table_name }}<br>
-                <small>Payment State:</small>
+                <small>Payment State:</small> {{ $t->total }} VND
                 <?php
                 if ($t->state == 'not paid') echo '<span class="badge bg-danger">Not Paid</span>';
                 else echo '<span class="badge bg-success">Paid</span>';
@@ -69,16 +69,7 @@
                                     <div class="form-group">
                                         <label>Timeslot</label>
                                         <select class="form-control select2 select2-hidden-accessible" style="width: 50%;" id="TS" name="time_slot" value="{{ $t->time_slot }}" onchange="showTable()" tabindex="-1" aria-hidden="true">
-                                            <option value="07:30 AM - 09:00 AM">07:30 AM - 09:00 AM</option>
-                                            <option value="09:00 AM - 10:30 AM">09:00 AM - 10:30 AM</option>
-                                            <option value="10:30 AM - 12:00 PM">10:30 AM - 12:00 PM</option>
-                                            <option value="12:00 PM - 01:30 PM">12:00 PM - 01:30 PM</option>
-                                            <option value="01:30 PM - 03:00 PM">01:30 PM - 03:00 PM</option>
-                                            <option value="03:00 PM - 04:30 PM">03:00 PM - 04:30 PM</option>
-                                            <option value="04:30 PM - 06:00 PM">04:30 PM - 06:00 PM</option>
-                                            <option value="06:00 PM - 07:30 PM">06:00 PM - 07:30 PM</option>
-                                            <option value="07:30 PM - 09:00 PM">07:30 PM - 09:00 PM</option>
-                                            <option value="09:00 PM - 10:30 PM">09:00 PM - 10:30 PM</option>
+                                            
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -117,7 +108,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ url('payment') }}/{{$t->id}}" method="POST">
+                            <form action="{{ url('payment') }}/{{$t->id}}/{{$t->total}}" method="POST">
                                 @csrf
                                 <input type="hidden" name="" value="">
                                 <button type="submit" class="btn custom-btn btn-lg" name="payUrl">
@@ -189,6 +180,17 @@
 @push('js')
 <script>
     console.log("Hi, I'm using the Laravel-AdminLTE package!");
+
+    var xhttp;
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            // console.log(this.responseText);
+            document.getElementById("TS").innerHTML = this.responseText;
+        }
+    };
+    xhttp.open("GET", "/timeslot/list", true);
+    xhttp.send();
 </script>
 <script>
     function clicked(id) {
@@ -230,7 +232,7 @@
                 document.getElementById("AT").innerHTML = this.responseText;
             }
         };
-        xhttp.open("GET", "/filter" + "/" + encodeURIComponent(date) + "/" + encodeURIComponent(timeslot), true);
+        xhttp.open("GET", "/booking/filter" + "/" + encodeURIComponent(date) + "/" + encodeURIComponent(timeslot), true);
         xhttp.send();
     }
 </script>

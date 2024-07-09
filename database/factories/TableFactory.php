@@ -36,6 +36,7 @@ class TableFactory extends Factory
         return [
             'name' => $tableName,
             'description' => $description,
+            'price' => '50000',
             'picture_url' => $tableurl,
         ];
     }

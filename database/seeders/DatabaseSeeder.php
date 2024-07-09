@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Role;
+use App\Models\Timeslot;
 use App\Models\User;
 
 class DatabaseSeeder extends Seeder
@@ -35,7 +36,9 @@ class DatabaseSeeder extends Seeder
         //     'password' => '11111111',
         // ]);
         $this->call(RoleSeeder::class);
+        $this->call(PermissionSeeder::class);
         $this->call(AdminSeeder::class);
+        $this->call(TimeslotSeeder::class);
         $this->call(TablesSeeder::class);
         $this->call(TableAvailabilitySeeder::class);
     }

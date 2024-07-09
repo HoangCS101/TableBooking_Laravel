@@ -17,6 +17,7 @@
         <td>TableName</td>
         <td>Name</td>
         <td>PhoneNum</td>
+        <td>Total</td>
         <td>State</td>
         <td>Date</td>
         <td>Timeslot</td>
@@ -29,6 +30,7 @@
             <td class="inner-table">{{ $t->table_name }}</td>
             <td class="inner-table">{{ $t->guest_name }}</td>
             <td class="inner-table">{{ $t->pnum }}</td>
+            <td class="inner-table">{{ $t->total }}</td>
             <td class="inner-table">
                 <?php
                 if ($t->state == 'not paid') echo '---';

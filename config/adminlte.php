@@ -321,11 +321,28 @@ return [
             'icon' => 'far fa-fw fa-calendar-alt',
         ],
         [
+            'text' => 'Reservation',
+            'url' => 'booking/create',
+            'icon' => 'fas fa-fw fa-concierge-bell',
+        ],
+        [
             'text' => 'Tables',
             'url' => 'table',
             'icon' => 'fas fa-fw fa-utensils',
             // 'can' => 'admin',
         ],
+        [
+            'text' => 'Add Table',
+            'url' => 'table/create',
+            'icon' => 'fas fa-fw fa-plus',
+            // 'can' => 'admin',
+        ],
+        [
+            'text' => 'Timeslot',
+            'url' => 'timeslot',
+            'icon' => 'fas fa-fw fa-clock',
+        ],
+        ['header' => 'ADMIN'],
         [
             'text' => 'Users',
             'url' => 'user',
@@ -345,17 +362,6 @@ return [
                     'url' => 'admin/permissions',
                 ],
             ]
-        ],
-        [
-            'text' => 'Reservation',
-            'url' => 'booking/create',
-            'icon' => 'fas fa-fw fa-concierge-bell',
-        ],
-        [
-            'text' => 'Add Table',
-            'url' => 'table/create',
-            'icon' => 'fas fa-fw fa-plus',
-            // 'can' => 'admin',
         ],
         ['header' => 'account_settings'],
         [

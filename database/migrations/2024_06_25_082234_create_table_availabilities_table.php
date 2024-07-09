@@ -17,18 +17,8 @@ return new class extends Migration
             $table->string('guest_name');
             $table->string('pnum');
             $table->date('date');
-            $table->enum('time_slot', [
-                '07:30 AM - 09:00 AM',
-                '09:00 AM - 10:30 AM',
-                '10:30 AM - 12:00 PM',
-                '12:00 PM - 01:30 PM',
-                '01:30 PM - 03:00 PM',
-                '03:00 PM - 04:30 PM',
-                '04:30 PM - 06:00 PM',
-                '06:00 PM - 07:30 PM',
-                '07:30 PM - 09:00 PM',
-                '09:00 PM - 10:30 PM',
-            ]);
+            $table->foreignId('timeslot_id')->constrained('timeslots')->onDelete('cascade');
+            $table->text('total')->nullable();
             $table->enum('state', ['paid', 'not paid'])->default('not paid');
             $table->timestamps();
             $table->foreignId('user_id')->default(1)->constrained()->onDelete('cascade');

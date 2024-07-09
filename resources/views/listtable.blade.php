@@ -16,6 +16,7 @@
         <td>ID</td>
         <td>Name</td>
         <td>Description</td>
+        <td>Price</td>
         <td>Picture URL</td>
     </thead>
 
@@ -25,6 +26,7 @@
             <td>{{ $t->id }}</td>
             <td class="inner-table">{{ $t->name }}</td>
             <td class="inner-table">{{ $t->description }}</td>
+            <td class="inner-table">{{ $t->price }}</td>
             <td class="inner-table">{{ $t->picture_url }}</td>
         </tr>
         @endforeach
@@ -122,7 +124,7 @@
     $(document).ready(function() {
         let table = $('#myTable').DataTable({
             "columnDefs": [{
-                "targets": 3, // Index of the "Picture URL" column
+                "targets": 4, // Index of the "Picture URL" column
                 "render": function(data, type, row, meta) {
                     if (data.length > 30) { // Adjust the threshold as needed
                         return data.substr(0, 30) + '...';
@@ -138,7 +140,7 @@
             let data = table.row(this).data();
 
             // Create and position the hovering window
-            let $hoverWindow = $('<div class="hover-window"><img src="' + data[3] + '" alt="Photo 2" class="img-fluid" style="width: 200px; height: auto;"></div>');
+            let $hoverWindow = $('<div class="hover-window"><img src="' + data[4] + '" alt="Photo 2" class="img-fluid" style="width: 200px; height: auto;"></div>');
             $hoverWindow.appendTo('body'); // Append to body to make it floating
 
             // Position the hovering window relative to the mouse cursor
@@ -163,10 +165,10 @@
             globalVar = data[0];
 
             let $modalImage = $('#exampleModal').find('.modal-body img');
-            $modalImage.attr('src', data[3]);
+            $modalImage.attr('src', data[4]);
 
             let $modalLink = $('#exampleModal').find('#pictureLink');
-            $modalLink.attr('href', data[3]);
+            $modalLink.attr('href', data[4]);
 
             let modal = new bootstrap.Modal(document.getElementById('exampleModal'));
             modal.show();

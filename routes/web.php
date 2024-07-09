@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\TimeslotController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -59,9 +60,12 @@ Route::middleware(['auth', 'verified', 'permission:manage bookings'])->group(fun
     Route::get('/booking/preview/{id}', [TableAvailabilityController::class, 'tablePreview']);
 
     // Payment
-    Route::post('/payment/{id}', [PaymentController::class, 'momopay']);
+    Route::post('/payment/{id}/{total}', [PaymentController::class, 'momopay']);
     Route::get('/payment/{id}/success', [PaymentController::class, 'pay_succ']);
 });
+
+Route::get('/timeslot/list', [TimeslotController::class, 'list'])->middleware(['auth', 'verified']);
+Route::resource('/timeslot', TimeslotController::class)->middleware(['auth', 'verified']);
 
 Route::resource('/table', TableController::class)->middleware(['auth', 'verified', 'permission:manage tables']);
 

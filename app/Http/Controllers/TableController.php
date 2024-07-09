@@ -33,6 +33,7 @@ class TableController extends Controller
         $todo = new Table();
         $todo->name = $request->input('name');
         $todo->description = $request->input('description');
+        $todo->price = $request->input('price');
         $todo->picture_url = $request->input('picture_url');
         $todo->save();
         return redirect('/table');
