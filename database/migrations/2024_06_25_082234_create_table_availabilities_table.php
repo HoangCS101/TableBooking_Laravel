@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('date');
             $table->foreignId('timeslot_id')->constrained('timeslots')->onDelete('cascade');
             $table->text('total')->nullable();
-            $table->enum('state', ['paid', 'not paid'])->default('not paid');
+            $table->enum('state', ['paid', 'locked', 'unlocked'])->default('locked');
             $table->timestamps();
             $table->foreignId('user_id')->default(1)->constrained()->onDelete('cascade');
         });

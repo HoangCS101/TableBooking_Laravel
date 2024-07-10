@@ -56,8 +56,8 @@
                         <div class="col">
                             <div class="form-group">
                                 <select class="form-control select2 select2-hidden-accessible" style="width: 50%;" id="act" name="act" tabindex="-1" aria-hidden="true">
-                                    <option value="1">Add</option>
-                                    <option value="0">Remove</option>
+                                    <option value="1">Give</option>
+                                    <option value="0">Take</option>
                                 </select>
                             </div>
                         </div>

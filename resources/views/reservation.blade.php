@@ -39,7 +39,7 @@
                     </div>
                     <div class="form-group">
                         <label>Available Tables</label>
-                        <select class="form-control select2 select2-hidden-accessible" style="width: 30%;" id="AT" name="AT" tabindex="-1" aria-hidden="true" onchange="preview()">
+                        <select class="form-control select2 select2-hidden-accessible" style="width: 30%;" id="timeslot" name="timeslot" tabindex="-1" aria-hidden="true" onchange="preview()">
                             <option value="">Select Date and Time</option>
                         </select>
                     </div>
@@ -103,8 +103,8 @@
         xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("AT").innerHTML = this.responseText;
-                // AT stands for Available Tables, basically you want to see if anyone has taken your desired table and what's left for ya.
+                document.getElementById("timeslot").innerHTML = this.responseText;
+                // timeslot is for Available Tables, basically you want to see if anyone has taken your desired table and what's left for ya.
             }
         };
         xhttp.open("GET", "/booking/filter" + "/" + encodeURIComponent(date) + "/" + timeslot, true);
@@ -112,7 +112,7 @@
     }
 
     function preview() {
-        var table_id = document.getElementById("AT").value;
+        var table_id = document.getElementById("timeslot").value;
 
         var xhttp;
         xhttp = new XMLHttpRequest();

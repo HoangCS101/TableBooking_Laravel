@@ -44,14 +44,14 @@ class TableAvailabilityController extends Controller
         $todo = new TableAvailability();
         $todo->guest_name = $request->input('name');
         $todo->pnum = $request->input('phone_num');
-        $todo->table_id = $request->input('AT');
+        $todo->table_id = $request->input('timeslot');
         $todo->date = $request->input('date');
         $todo->timeslot_id = $request->input('time_slot');
         $todo->total = intval(Table::where('id',$todo->table_id)->value('price')) + intval(Timeslot::where('id',$todo->timeslot_id)->value('price'));
         $todo->user_id = $request->user()->id;
 
         $todo->save();
-        return redirect('/booking');
+        return redirect('/booking/'.$todo->id);
     }
 
     /**
@@ -88,7 +88,7 @@ class TableAvailabilityController extends Controller
         $todo = TableAvailability::find($id);
         $todo->guest_name = $request->input('name');
         $todo->pnum = $request->input('phone_num');
-        $todo->table_id = $request->input('AT');
+        $todo->table_id = $request->input('timeslot');
         $todo->date = $request->input('date');
         $todo->timeslot_id = $request->input('time_slot');
         $todo->total = intval(Table::where('id',$todo->table_id)->value('price')) + intval(Timeslot::where('id',$todo->timeslot_id)->value('price'));
@@ -123,9 +123,13 @@ class TableAvailabilityController extends Controller
         // return "Filtering for $date and $timeslot";
         $bookedTableIds = TableAvailability::where('date', $date)
             ->where('timeslot_id', $timeslot)
+            ->where(function($query) {
+                $query->where('state', 'locked')
+                      ->orWhere('state', 'paid');
+            })
             ->pluck('table_id')
             ->toArray();
-
+        
         // Get tables that are NOT in the $bookedTableIds array
         $availableTables = Table::whereNotIn('id', $bookedTableIds)
             ->select('id', 'name')

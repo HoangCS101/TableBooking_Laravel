@@ -342,13 +342,13 @@ return [
             'url' => 'timeslot',
             'icon' => 'fas fa-fw fa-clock',
         ],
-        ['header' => 'ADMIN'],
         [
             'text' => 'Users',
             'url' => 'user',
             'icon' => 'fas fa-fw fa-address-book',
             // 'can' => 'admin',
         ],
+        ['header' => 'ADMIN'],
         [
             'text' => 'Account Management',
             'icon' => 'fas fa-fw fa-tag',

@@ -26,7 +26,7 @@ class ValidateRequest extends FormRequest
             'phone_num' => 'required|string|max:10',
             'date' => 'required|date',
             'time_slot' => 'required',
-            'AT' => 'required',
+            'timeslot' => 'required',
             // 'description' => 'string',
             // 'picture_url' => 'required'
         ];

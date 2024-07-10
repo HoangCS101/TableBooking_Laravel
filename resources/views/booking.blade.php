@@ -33,7 +33,8 @@
             <td class="inner-table">{{ $t->total }}</td>
             <td class="inner-table">
                 <?php
-                if ($t->state == 'not paid') echo '---';
+                if ($t->state == 'locked') echo 'Locked';
+                elseif ($t->state == 'unlocked') echo 'Unlocked';
                 else echo 'Paid';
                 ?>
             </td>

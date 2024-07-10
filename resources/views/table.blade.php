@@ -25,6 +25,10 @@
     </div>
     <div class="col-sm-4">
         <div class="callout" style="margin-bottom: 0; border-left-color: #6c757d;">
+            <h5 style="margin-bottom: 10px;" id="demo"></h5>
+            <script>
+                var time = '{{ $t->created_at }}';
+            </script>
             <h5 style="margin-bottom: 10px;"><small>Guest Name:</small> {{ $t->guest_name }}</h5>
             <p style="margin-bottom: 5px;">
                 <small>Phone Number:</small> {{ $t->pnum }}<br>
@@ -32,7 +36,8 @@
                 <small>Table:</small> {{ $t->table_name }}<br>
                 <small>Payment State:</small> {{ $t->total }} VND
                 <?php
-                if ($t->state == 'not paid') echo '<span class="badge bg-danger">Not Paid</span>';
+                if ($t->state == 'locked') echo '<span class="badge bg-danger">Not Paid</span>';
+                elseif ($t->state == 'unlocked') echo '<span class="badge bg-secondary">Expired</span>';
                 else echo '<span class="badge bg-success">Paid</span>';
                 ?>
             </p>
@@ -74,7 +79,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Available Tables</label>
-                                        <select class="form-control select2 select2-hidden-accessible" style="width: 50%;" id="AT" name="AT" tabindex="-1" aria-hidden="true">
+                                        <select class="form-control select2 select2-hidden-accessible" style="width: 50%;" id="timeslot" name="timeslot" tabindex="-1" aria-hidden="true">
                                             <option value="{{ $t->table_id }}">{{ $t->table_name }}</option>
                                         </select>
                                     </div>
@@ -93,7 +98,8 @@
             </div>
             <button type="button" class="btn btn-danger border" onclick="clicked('{{ $t->id }}')">Delete</button>
             <?php
-            if ($t->state == 'not paid') echo '<button type="button" class="btn btn-secondary border" data-toggle="modal" data-target="#paymentModal">Pay</button>';
+            if ($t->state == 'locked') echo '<button type="button" class="btn btn-secondary border" data-toggle="modal" data-target="#paymentModal">Pay</button>';
+            elseif ($t->state == 'unlocked') echo '<button type="button" class="btn btn-secondary border">Pay</button>';
             else echo '<button type="button" class="btn btn-success border">Paid</button>';
             ?>
             <!-- <button type="button" class="btn btn-secondary border" data-toggle="modal" data-target="#paymentModal">Pay</button> -->
@@ -189,8 +195,6 @@
 
 @push('js')
 <script>
-    console.log("Hi, I'm using the Laravel-AdminLTE package!");
-
     var xhttp;
     xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -239,7 +243,7 @@
         xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("AT").innerHTML = this.responseText;
+                document.getElementById("timeslot").innerHTML = this.responseText;
             }
         };
         xhttp.open("GET", "/booking/filter" + "/" + encodeURIComponent(date) + "/" + encodeURIComponent(timeslot), true);
@@ -247,25 +251,60 @@
     }
 </script>
 <script>
-        // Function to fade out the alert
-        function fadeOut(element) {
-            var opacity = 1;
-            var timer = setInterval(function() {
-                if (opacity <= 0.01){
-                    clearInterval(timer);
-                    element.style.display = 'none';
-                }
-                element.style.opacity = opacity;
-                opacity -= 0.01;
-            }, 50); // Adjust fade out speed (lower value means faster fade out)
-        }
+    // Function to fade out the alert
+    function fadeOut(element) {
+        var opacity = 1;
+        var timer = setInterval(function() {
+            if (opacity <= 0.01) {
+                clearInterval(timer);
+                element.style.display = 'none';
+            }
+            element.style.opacity = opacity;
+            opacity -= 0.01;
+        }, 50); // Adjust fade out speed (lower value means faster fade out)
+    }
 
-        // Fade out the alert after a delay
-        window.onload = function() {
-            var errorAlert = document.getElementById('errorAlert');
+    // Fade out the alert after a delay
+    window.onload = function() {
+        var errorAlert = document.getElementById('errorAlert');
+        if (errorAlert) {
             setTimeout(function() {
                 fadeOut(errorAlert);
-            }, 500); // Display duration before fade out (in milliseconds)
-        };
-    </script>
+            }, 500);
+        } // Display duration before fade out (in milliseconds)
+    };
+</script>
+<script>
+    // Parse the date-time string into a Date object
+    var dateTime = new Date(time);
+
+    // Add 3 minutes to the Date object
+    dateTime.setMinutes(dateTime.getMinutes() + 3);
+    // Set the date we're counting down to
+    var countDownDate = new Date(dateTime).getTime();
+    // Update the count down every 1 second
+    var x = setInterval(function() {
+
+        // Get today's date and time
+        var now = new Date().getTime();
+
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now;
+
+        // // Time calculations for days, hours, minutes and seconds
+        // var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        // var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Output the result in an element with id="demo"
+        document.getElementById("demo").innerHTML = '<small>Time Remaining: </small>' + minutes + "m " + seconds + "s ";
+
+        // If the count down is over, write some text 
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("demo").innerHTML = "EXPIRED";
+        }
+    }, 1000);
+</script>
 @endpush

@@ -13,7 +13,7 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::create(['name' => 'admin']);
+        Role::create(['name' => 'admin'])->givePermissionTo(['manage bookings', 'manage users', 'manage tables']);
         Role::create(['name' => 'user']);
     }
 }

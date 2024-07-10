@@ -35,8 +35,8 @@ class DatabaseSeeder extends Seeder
         //     'role_id' => '2',
         //     'password' => '11111111',
         // ]);
-        $this->call(RoleSeeder::class);
         $this->call(PermissionSeeder::class);
+        $this->call(RoleSeeder::class);
         $this->call(AdminSeeder::class);
         $this->call(TimeslotSeeder::class);
         $this->call(TablesSeeder::class);
