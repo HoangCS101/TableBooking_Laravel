@@ -23,7 +23,7 @@ class ValidateRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'phone_num' => 'required|string|max:10',
+            'phone_num' => 'required|string|max:20',
             'date' => 'required|date',
             'time_slot' => 'required',
             'timeslot' => 'required',

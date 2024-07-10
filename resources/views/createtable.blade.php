@@ -14,8 +14,6 @@
     <div class="card-header">
         <h3 class="card-title">Add Table</h3>
     </div>
-
-
     <form method="POST" action="/table">
         @csrf
         <div class="card-body">
@@ -36,15 +34,6 @@
                 <input type="text" class="form-control" id="picture_url" name='picture_url' placeholder="Add Picture URL">
             </div>
         </div>
-        <!-- @if ($errors->any())
-        <div class="alert alert-danger" style="width: 95%;margin-left:2.5%">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif -->
         <div class="card-footer">
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>

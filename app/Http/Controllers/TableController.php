@@ -61,7 +61,13 @@ class TableController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $todo = Table::find($id);
+        $todo->name = $request->input('name');
+        $todo->description = $request->input('description');
+        $todo->price = $request->input('price');
+        $todo->picture_url = $request->input('picture_url');
+        $todo->update();
+        return redirect('/table');
     }
 
     /**

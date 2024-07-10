@@ -48,6 +48,31 @@
                     <a href="#" id="pictureLink" target="_blank">View Full Image</a>
                 </div>
             </div>
+            <form id="form" method="POST" action="">
+                @csrf
+                @method('PUT')
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="name">Table Name</label>
+                        <input type="text" class="form-control" id="name" name='name' placeholder="Enter Table Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea class="form-control" rows="3" id="description" name='description' placeholder="Add Description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="price">Price (VND)</label>
+                        <input type="text" class="form-control" id="price" name='price' placeholder="Add Pricing">
+                    </div>
+                    <div class="form-group">
+                        <label for="picture_url">Picture URL</label>
+                        <input type="text" class="form-control" id="picture_url" name='picture_url' placeholder="Add Picture URL">
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-danger" onclick="clicked()">Delete Table</button>
@@ -169,6 +194,12 @@
 
             let $modalLink = $('#exampleModal').find('#pictureLink');
             $modalLink.attr('href', data[4]);
+            
+            $('#exampleModal').find('#name').attr('value', data[1]);
+            $('#exampleModal').find('#description').val(data[2]);
+            $('#exampleModal').find('#price').attr('value', data[3]);
+            $('#exampleModal').find('#picture_url').attr('value', data[4]);
+            $('#exampleModal').find('#form').attr('action', '/table/'+data[0]);
 
             let modal = new bootstrap.Modal(document.getElementById('exampleModal'));
             modal.show();

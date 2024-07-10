@@ -25,7 +25,9 @@
     </div>
     <div class="col-sm-4">
         <div class="callout" style="margin-bottom: 0; border-left-color: #6c757d;">
-            <h5 style="margin-bottom: 10px;" id="demo"></h5>
+            <?php
+            if ($t->state != 'paid') echo '<h5 style="margin-bottom: 10px;" id="demo"></h5>';
+            ?>
             <script>
                 var time = '{{ $t->created_at }}';
             </script>
