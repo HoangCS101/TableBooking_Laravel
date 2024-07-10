@@ -65,7 +65,7 @@ Route::middleware(['auth', 'verified', 'permission:manage bookings'])->group(fun
 });
 
 Route::get('/timeslot/list', [TimeslotController::class, 'list'])->middleware(['auth', 'verified']);
-Route::resource('/timeslot', TimeslotController::class)->middleware(['auth', 'verified']);
+Route::resource('/timeslot', TimeslotController::class)->middleware(['auth', 'verified', 'permission:manage timeslot']);
 
 Route::resource('/table', TableController::class)->middleware(['auth', 'verified', 'permission:manage tables']);
 

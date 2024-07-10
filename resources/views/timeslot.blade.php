@@ -27,7 +27,7 @@
             <td class="inner-table">{{ $t->price }}</td>
             <td>
                 <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" data-id="{{ $t->id }}" data-name="{{ $t->slot_name }}" data-price="{{ $t->price }}">Edit</button>
-                <form action="{{ route('admin.permissions.destroy', $t->id)}} " method="POST" style="display:inline;">
+                <form action="/timeslot/{{$t->id}}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this permission?')">Delete</button>

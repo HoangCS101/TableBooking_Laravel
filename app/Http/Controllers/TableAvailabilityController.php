@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ValidateRequest;
 use Illuminate\Http\Request;
 use App\Models\TableAvailability;
 use App\Models\Table;
@@ -38,15 +39,8 @@ class TableAvailabilityController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ValidateRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'phone_num' => 'required|string|max:10',
-            'date' => 'required|date',
-            'time_slot' => 'required',
-            'AT' => 'required',
-        ]);
         $todo = new TableAvailability();
         $todo->guest_name = $request->input('name');
         $todo->pnum = $request->input('phone_num');
@@ -89,19 +83,18 @@ class TableAvailabilityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ValidateRequest $request, string $id)
     {
         $todo = TableAvailability::find($id);
         $todo->guest_name = $request->input('name');
         $todo->pnum = $request->input('phone_num');
         $todo->table_id = $request->input('AT');
         $todo->date = $request->input('date');
-        $todo->time_slot = $request->input('time_slot');
-        // $todo->user_id = $request->user()->id;
+        $todo->timeslot_id = $request->input('time_slot');
+        $todo->total = intval(Table::where('id',$todo->table_id)->value('price')) + intval(Timeslot::where('id',$todo->timeslot_id)->value('price'));
+        $todo->user_id = $request->user()->id;
 
         $todo->update();
-        // TableAvailability::where('id', $id)
-        //   ->update(['guest_name' => $request->input('name')]);
         return redirect('/booking/'.$id);
     }
 

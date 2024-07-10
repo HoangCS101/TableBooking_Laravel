@@ -56,20 +56,13 @@
 {{-- Push extra scripts --}}
 
 @push('js')
-<script>
-    console.log("Hi, I'm using the Laravel-AdminLTE package!");
-</script>
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
 <script>
-    // $(document).ready(function() {
-    //     $('#myTable').DataTable();
-    // });
     let table = new DataTable('#myTable');
 
     table.on('click', 'tbody tr', function() {
         let data = table.row(this).data();
 
-        // alert('You clicked on ' + data[0] + "'s row");
         window.location.href = "{{ url('booking') }}/" + data[0];
     });
 </script>

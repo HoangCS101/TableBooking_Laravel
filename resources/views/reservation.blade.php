@@ -2,7 +2,7 @@
 
 {{-- Customize layout sections --}}
 
-@section('subtitle', 'Reservation')
+@section('subtitle', 'Make Reservation')
 @section('content_header_title', 'Dashboard')
 @section('content_header_subtitle', 'Reservation')
 
@@ -60,21 +60,14 @@
         </div>
     </div>
     <div class="col-md-5">
-        <!-- Empty form placeholder -->
         <div class="card card-primary" style="height: 100%">
             <div class="card-header">
                 <h3 class="card-title">Table Preview</h3>
             </div>
-            <form>
-                <div class="card-body" id="preview">
-                    <!-- Add any additional fields as needed -->
-                    Nothing to see here (for now)<br>
-                    Make changes on <strong>Available Tables</strong> to actually see me change.
-                </div>
-                <!-- <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div> -->
-            </form>
+            <div class="card-body" id="preview">
+                Nothing to see here (for now)<br>
+                Make changes on <strong>Available Tables</strong> to actually see me change.
+            </div>
         </div>
     </div>
 </div>
@@ -91,13 +84,10 @@
 
 @push('js')
 <script>
-    console.log("Hi, I'm using the Laravel-AdminLTE package!");
-
     var xhttp;
     xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            // console.log(this.responseText);
             document.getElementById("TS").innerHTML = this.responseText;
         }
     };
@@ -108,12 +98,13 @@
     function showTable() {
         var timeslot = document.getElementById("TS").value;
         var date = document.getElementById("date").value;
-        console.log(timeslot + " " + date);
+
         var xhttp;
         xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 document.getElementById("AT").innerHTML = this.responseText;
+                // AT stands for Available Tables, basically you want to see if anyone has taken your desired table and what's left for ya.
             }
         };
         xhttp.open("GET", "/booking/filter" + "/" + encodeURIComponent(date) + "/" + timeslot, true);

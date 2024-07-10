@@ -69,7 +69,7 @@
                                     <div class="form-group">
                                         <label>Timeslot</label>
                                         <select class="form-control select2 select2-hidden-accessible" style="width: 50%;" id="TS" name="time_slot" value="{{ $t->time_slot }}" onchange="showTable()" tabindex="-1" aria-hidden="true">
-                                            
+
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -121,6 +121,16 @@
                 </div>
             </div>
         </div>
+        @if ($errors->any())
+        <div id="errorAlert" class="alert alert-danger" style="width: 100%;">
+            Edit Failed!!!
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
     </div>
 </div>
 @endforeach
@@ -236,4 +246,26 @@
         xhttp.send();
     }
 </script>
+<script>
+        // Function to fade out the alert
+        function fadeOut(element) {
+            var opacity = 1;
+            var timer = setInterval(function() {
+                if (opacity <= 0.01){
+                    clearInterval(timer);
+                    element.style.display = 'none';
+                }
+                element.style.opacity = opacity;
+                opacity -= 0.01;
+            }, 50); // Adjust fade out speed (lower value means faster fade out)
+        }
+
+        // Fade out the alert after a delay
+        window.onload = function() {
+            var errorAlert = document.getElementById('errorAlert');
+            setTimeout(function() {
+                fadeOut(errorAlert);
+            }, 500); // Display duration before fade out (in milliseconds)
+        };
+    </script>
 @endpush

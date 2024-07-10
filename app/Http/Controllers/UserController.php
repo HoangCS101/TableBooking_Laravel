@@ -21,7 +21,7 @@ class UserController extends Controller
             $user->roles = $userRoles;
         }
 
-        return view('customerlist', ['todo' => $users]);
+        return view('userlist', ['todo' => $users]);
     }
 
     /**

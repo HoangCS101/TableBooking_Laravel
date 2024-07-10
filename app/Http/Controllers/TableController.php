@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\ValidateRequest;
 use App\Models\Table;
 
 class TableController extends Controller
@@ -14,7 +15,7 @@ class TableController extends Controller
     {
         $todos = Table::all();
 
-        return view('listtable', ['todo' => $todos]);
+        return view('tablelist', ['todo' => $todos]);
     }
 
     /**

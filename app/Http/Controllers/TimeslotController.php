@@ -77,7 +77,9 @@ class TimeslotController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $ts = Timeslot::findOrFail($id);
+        $ts->delete();
+        return redirect('/timeslot');
     }
 
     public function list() {
