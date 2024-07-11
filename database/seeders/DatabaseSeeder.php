@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Role;
 use App\Models\Timeslot;
 use App\Models\User;
+use App\Models\Chirp;
 
 class DatabaseSeeder extends Seeder
 {
@@ -29,16 +30,15 @@ class DatabaseSeeder extends Seeder
         //     'role_id' => '1',
         //     'password' => 'adminpass',
         // ]);
-        // User::create([
-        //     'name' => 'Hoang Le',
-        //     'email' => 'hoang.le@vietlink.jp',
-        //     'role_id' => '2',
-        //     'password' => '11111111',
-        // ]);
         $this->call(PermissionSeeder::class);
         $this->call(RoleSeeder::class);
         $this->call(AdminSeeder::class);
         $this->call(TimeslotSeeder::class);
+        Chirp::create([
+            'sender_id' => '1',
+            'receiver_id' => '2',
+            'message' => 'Blow me',
+        ]);
         $this->call(TablesSeeder::class);
         $this->call(TableAvailabilitySeeder::class);
     }

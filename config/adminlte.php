@@ -304,6 +304,10 @@ return [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,
         ],
+        [
+            'icon' => 'fullscreen-widget',
+            'topnav_right' => true,
+        ],
 
         // Sidebar items:
         // [

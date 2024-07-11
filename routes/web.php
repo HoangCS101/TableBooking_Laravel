@@ -78,8 +78,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('chirps', ChirpController::class)
-    ->only(['index', 'store', 'edit', 'update', 'destroy'])
-    ->middleware(['auth', 'verified']);
+Route::get('/chirps', [ChirpController::class, 'getMessages']);
+Route::post('/chirps', [ChirpController::class, 'sendMessage']);
+// Route::resource('chirps', ChirpController::class)
+//     ->only(['index', 'store', 'edit', 'update', 'destroy'])
+//     ->middleware(['auth', 'verified']);
 
 require __DIR__ . '/auth.php';
