@@ -33,7 +33,9 @@
 {{-- Rename section content to content_body --}}
 
 @section('content')
-<a class="nav-link" data-widget="control-sidebar" href="#">Toggle Control Sidebar</a>
+<button class="btn btn-secondary" data-widget="control-sidebar" style="margin-bottom: 10px">
+    <i class="fas fa-comment"></i>
+</button>
 <aside id="chatbox" class="control-sidebar control-sidebar-light" style="height: 100%; width: auto;height: auto">
     <div class="p-3" style="height: 100%; overflow: auto;">
         <div class="max-w-full max-h-full overflow-x-auto overflow-y-auto">
@@ -86,7 +88,7 @@
                         <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_star.png" alt="">
                     </header>
                     <ul id="chat">
-                        
+
                     </ul>
                     <footer>
                         <footer>
@@ -129,15 +131,16 @@
                 success: function(response) {
                     // Clear existing messages
                     $('#chat').empty();
-                    console.log(response);
+                    // console.log(response);
                     // Append fetched messages to chatbox
                     response.messages.forEach(function(message) {
-                        var messageTypeClass = (message.sender_id == 1) ? 'me' : 'you';
-                        var messageSenderName = (message.sender_id == 1) ? 'admin' : 'user';
+                        // var messageTypeClass = (message.sender_id == 1) ? 'me' : 'you';
+                        // var messageSenderName = (message.sender_id == 1) ? 'admin' : 'user';
+                        // console.log(message.name);
                         var messageHTML = `
-                            <li class="${messageTypeClass}">
+                            <li class="${message.type}">
                                 <div class="entete">
-                                    <h2>${messageSenderName}</h2>
+                                    <h2>${message.name}</h2>
                                     <h3>${message.created_at}</h3>
                                 </div>
                                 <div class="triangle"></div>
