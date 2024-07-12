@@ -9,7 +9,6 @@
 {{-- Content body: main page content --}}
 
 @section('content_body')
-<p>List of Customers.</p>
 
 <table id="myTable" class="display">
     <thead>

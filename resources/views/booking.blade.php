@@ -9,7 +9,6 @@
 {{-- Content body: main page content --}}
 
 @section('content_body')
-<p>View Booking List here!</p>
 
 <table id="myTable" class="display">
     <thead>

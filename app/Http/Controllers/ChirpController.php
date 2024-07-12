@@ -101,16 +101,7 @@ class ChirpController extends Controller
         $messages = Chirp::select('message', 'sender_id', 'receiver_id', 'created_at')
                             ->orderBy('created_at', 'asc')
                             ->get();
-        // Log::info('Request received to fetch messages:', [
-        //     'request_method' => $request->method(),
-        //     'request_url' => $request->fullUrl(),
-        //     'request_parameters' => $request->all(),
-        // ]);
-        // $messages->transform(function ($item, $user) {
-        //     Log::info($user->id);
 
-        //     return $item;
-        // });
         foreach ($messages as $message){
             if ($message->sender_id == $user->id) {
                 $message->type = 'me';
@@ -119,7 +110,6 @@ class ChirpController extends Controller
             else {
                 $message->type = 'you';
                 $message->name = User::where('id', $message->receiver_id)->pluck('name');
-                // Log::info($message->name);
             }
         }
 

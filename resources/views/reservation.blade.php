@@ -9,7 +9,6 @@
 {{-- Content body: main page content --}}
 
 @section('content_body')
-<p>Fill in the form to finish your table reservation.</p>
 <div class="row">
     <div class="col-md-7">
         <div class="card card-primary" style="height: 100%">

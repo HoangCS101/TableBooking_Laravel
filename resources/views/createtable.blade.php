@@ -9,7 +9,6 @@
 {{-- Content body: main page content --}}
 
 @section('content_body')
-<p>New Table Update.</p>
 <div class="card card-primary">
     <div class="card-header">
         <h3 class="card-title">Add Table</h3>

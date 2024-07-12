@@ -9,8 +9,6 @@
 {{-- Content body: main page content --}}
 
 @section('content_body')
-<p>Reservation Detail</p>
-<br>
 @foreach( $todo as $t )
 <div class="container">
     <div class="col-sm-4">

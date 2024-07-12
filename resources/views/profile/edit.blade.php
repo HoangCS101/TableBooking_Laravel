@@ -9,7 +9,6 @@
 {{-- Content body: main page content --}}
 
 @section('content_body')
-<p>Manage your very own profile.</p>
 
 <x-app-layout>
     <x-slot name="header">

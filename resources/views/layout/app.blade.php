@@ -33,8 +33,8 @@
 {{-- Rename section content to content_body --}}
 
 @section('content')
-<button class="btn btn-secondary" data-widget="control-sidebar" style="margin-bottom: 10px">
-    <i class="fas fa-comment"></i>
+<button class="btn btn-secondary" data-widget="control-sidebar" style="margin-bottom: 20px">
+    <i class="fas fa-comment"> ChatBox</i>
 </button>
 <aside id="chatbox" class="control-sidebar control-sidebar-light" style="height: 100%; width: auto;height: auto">
     <div class="p-3" style="height: 100%; overflow: auto;">
