@@ -11,6 +11,9 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\TimeslotController;
 use App\Http\Controllers\ChirpController;
+use App\Http\Controllers\ConversationController;
+use App\Models\Conversation;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -77,6 +80,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/conversations', [ConversationController::class, 'index']);
+Route::get('/conversations/online', [ConversationController::class, 'online']);
 
 Route::get('/chirps', [ChirpController::class, 'getMessages']);
 Route::post('/chirps', [ChirpController::class, 'sendMessage']);

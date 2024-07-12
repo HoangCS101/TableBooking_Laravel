@@ -8,6 +8,7 @@ use App\Models\Role;
 use App\Models\Timeslot;
 use App\Models\User;
 use App\Models\Chirp;
+use App\Models\Conversation;
 
 class DatabaseSeeder extends Seeder
 {
@@ -34,10 +35,12 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(AdminSeeder::class);
         $this->call(TimeslotSeeder::class);
+        $conversation = Conversation::create();
         Chirp::create([
             'sender_id' => '1',
             'receiver_id' => '2',
-            'message' => 'Blow me',
+            'message' => 'Yo Bud',
+            'conversation_id' => $conversation->id,
         ]);
         $this->call(TablesSeeder::class);
         $this->call(TableAvailabilitySeeder::class);

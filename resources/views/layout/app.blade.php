@@ -12,9 +12,7 @@
 @section('content_header')
 
 <head>
-    <!-- Other meta tags and stylesheets -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- Other scripts -->
 </head>
 @hasSection('content_header_title')
 <h1 class="text-muted">
@@ -44,7 +42,7 @@
                     <header>
                         <input type="text" placeholder="search">
                     </header>
-                    <ul>
+                    <ul id="users">
                         <li>
                             <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt="">
                             <div>
@@ -213,21 +211,53 @@
         });
     });
 </script>
+<script>
+    $(document).ready(function() {
+        function fetchUsers() {
+            $.ajax({
+                url: '/conversations/online',
+                method: 'GET',
+                success: function(response) {
+                    // Clear existing messages
+                    $('#users').empty();
+
+                    response.users.forEach(function(user) {
+                        var messageHTML = `
+                            <a href="#" id="online" data-id="${user.id}">
+                            <li>
+                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt="">
+                            <div>
+                                <h2>${user.name}</h2>
+                                <h3>
+                                    <span class="status green"></span>
+                                    online
+                                </h3>
+                            </div>
+                            </li>
+                            </a>
+                        `;
+                        $('#users').append(messageHTML);
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching messages:', error);
+                }
+            });
+        }
+
+        // Fetch on page load
+        fetchUsers();
+
+        // $('#users').on('click', '#online', function(event) {
+        //     event.preventDefault();
+        //     console.log('Online link was clicked');
+        // });S
+    });
+</script>
 @endpush
 
 {{-- Add common CSS customizations --}}
 
 @push('css')
 <link rel="stylesheet" href="{{ asset('chatbox.css') }}">
-<style type="text/css">
-    /* {{-- You can add AdminLTE customizations here --}} */
-    /*
-    .card-header {
-        border-bottom: none;
-    }
-    .card-title {
-        font-weight: 600;
-    }
-    */
-</style>
 @endpush

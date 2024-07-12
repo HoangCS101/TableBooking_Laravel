@@ -13,8 +13,8 @@ class Chirp extends Model
     protected $fillable = [
         'message',
     ];
-    public function user(): BelongsTo
+    public function conversation(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Conversation::class);
     }
 }
