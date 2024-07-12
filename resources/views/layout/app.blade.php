@@ -228,6 +228,7 @@
                             <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt="">
                             <div>
                                 <h2>${user.name}</h2>
+                                <h2>Conv ID : ${user.conversation_id}</h2>
                                 <h3>
                                     <span class="status green"></span>
                                     online
