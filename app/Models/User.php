@@ -47,13 +47,4 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    // public function chirps(): HasMany
-    // {
-    //     return $this->hasMany(Chirp::class);
-    // }
-    // public function chats(): BelongsToMany
-    // {
-    //     return $this->belongsToMany(Chat::class);
-    // }
 }

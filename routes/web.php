@@ -11,7 +11,6 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\TimeslotController;
 use App\Http\Controllers\ChatController;
-use App\Models\Chat;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +34,7 @@ Route::get('/', function () {
 Route::get('/auth/{provider}', [ProviderController::class, 'redirect']);
 Route::get('/auth/{provider}/callback', [ProviderController::class, 'callback']);
 
+// Roles and Permissions
 Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->group(function () {
     Route::prefix('/roles')->group(function () {
         Route::get('/', [RoleController::class, 'index'])->name('roles.index');
@@ -54,7 +54,7 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->grou
 
 // Route::post('/booking/{id}', [TableAvailabilityController::class, 'update'])->middleware(['auth', 'verified', 'role:admin']);
 // This is called by a HTML form, which doesn't really have a PUT method -> make it urself
-// Updates: Turns out @method('PUT') in the form can also do the trick
+// Updates: Turns out putting @method('PUT') in the form can also pull the trick
 
 Route::middleware(['auth', 'verified', 'permission:manage bookings'])->group(function () {
     Route::resource('/booking', TableAvailabilityController::class);
@@ -85,8 +85,5 @@ Route::get('/chat', [ChatController::class, 'index']);
 Route::get('/chat/online', [ChatController::class, 'checkOnline']);
 Route::get('/chat/{chatId}', [ChatController::class, 'viewChat']);
 Route::post ('/chat/{chatId}', [ChatController::class, 'sendMessage']);
-
-// Route::get('/chirps', [ChirpController::class, 'getMessages']);
-// Route::post('/chirps', [ChirpController::class, 'sendMessage']);
 
 require __DIR__ . '/auth.php';

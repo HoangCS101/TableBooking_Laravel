@@ -69,38 +69,4 @@ class MessageController extends Controller
     {
         // Gate::authorize('delete', $chirp);
     }
-
-    public function getMessages(Request $request)
-    {
-        // Example: Fetch messages from database
-        $user = $request->user();
-
-        $messages = Message::select('message', 'sender_id', 'receiver_id', 'created_at')
-                            ->orderBy('created_at', 'asc')
-                            ->get();
-
-        foreach ($messages as $message){
-            if ($message->sender_id == $user->id) {
-                $message->type = 'me';
-                $message->name = $user->name;
-            }
-            else {
-                $message->type = 'you';
-                $message->name = User::where('id', $message->receiver_id)->pluck('name');
-            }
-        }
-
-        return response()->json(['messages' => $messages]);
-    }
-
-    public function sendMessage(Request $request) {
-        $user = $request->user();
-        // Log::info($user->id);
-        $message = new Message();
-        $message->message = $request->input('message');
-        $message->conversation_id = 1;
-        $message->sender_id = $user->id;
-        $message->receiver_id = $user->id ? 2 : 1;
-        $message->save();
-    }
 }

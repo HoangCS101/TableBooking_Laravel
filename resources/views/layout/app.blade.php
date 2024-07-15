@@ -43,43 +43,13 @@
                         <input type="text" placeholder="search">
                     </header>
                     <ul id="users">
-                        <li>
-                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt="">
-                            <div>
-                                <h2>Prénom Nom</h2>
-                                <h3>
-                                    <span class="status orange"></span>
-                                    offline
-                                </h3>
-                            </div>
-                        </li>
-                        <li>
-                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_02.jpg" alt="">
-                            <div>
-                                <h2>Prénom Nom</h2>
-                                <h3>
-                                    <span class="status green"></span>
-                                    online
-                                </h3>
-                            </div>
-                        </li>
-                        <li>
-                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_03.jpg" alt="">
-                            <div>
-                                <h2>Prénom Nom</h2>
-                                <h3>
-                                    <span class="status orange"></span>
-                                    offline
-                                </h3>
-                            </div>
-                        </li>
-
+                        
                     </ul>
                 </aside>
                 <main>
                     <header>
                         <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt="">
-                        <div>
+                        <div id="header">
                             <h2>Chat with Vincent Porter</h2>
                             <h3>already 1902 messages</h3>
                         </div>
@@ -157,7 +127,7 @@
         }
 
         function fetchMessages(globalVar) {
-            if (globalVar == null)  return;
+            if (globalVar == null) return;
             console.log(globalVar);
             $.ajax({
                 url: '/chat/'+globalVar,
@@ -165,6 +135,7 @@
                 success: function(response) {
                     // Clear existing messages
                     $('#chat').empty();
+                    $('#header').empty();
 
                     response.messages.forEach(function(message) {
                         var messageHTML = `
@@ -182,6 +153,11 @@
                         $('#chat').append(messageHTML);
                     });
                     $('#chat').scrollTop($('#chat')[0].scrollHeight);
+                    var header = `
+                        <h2>Chat with Thunder</h2>
+                        <h3>already 1902 messages</h3>
+                    `;
+                    $('#header').append(header);
                 },
                 error: function(xhr, status, error) {
                     console.error('Error fetching messages:', error);

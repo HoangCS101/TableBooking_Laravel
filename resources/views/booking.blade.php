@@ -12,24 +12,26 @@
 
 <table id="myTable" class="display">
     <thead>
+        @role('admin')
         <td>BookingID</td>
-        <td>TableName</td>
+        <td>State</td>
+        @endrole
+        @role('user')
+        <td>State</td>
+        @endrole
         <td>Name</td>
         <td>PhoneNum</td>
         <td>Total</td>
-        <td>State</td>
+        <td>TableName</td>
         <td>Date</td>
         <td>Timeslot</td>
     </thead>
 
     <tbody>
         @foreach( $todo as $t )
-        <tr>
+        <tr data-id="{{ $t->id }}">
+            @role('admin')
             <td>{{ $t->id }}</td>
-            <td class="inner-table">{{ $t->table_name }}</td>
-            <td class="inner-table">{{ $t->guest_name }}</td>
-            <td class="inner-table">{{ $t->pnum }}</td>
-            <td class="inner-table">{{ $t->total }}</td>
             <td class="inner-table">
                 <?php
                 if ($t->state == 'locked') echo 'Locked';
@@ -37,8 +39,22 @@
                 else echo 'Paid';
                 ?>
             </td>
-            <td class="inner-table">{{ $t->date }}</td>
+            @endrole
+            @role('user')
+            <td class="inner-table">
+                <?php
+                if ($t->state == 'locked') echo 'Unpaid';
+                elseif ($t->state == 'unlocked') echo 'Cancelled';
+                else echo 'Paid';
+                ?>
+            </td>
+            @endrole
+            <td class="inner-table">{{ $t->guest_name }}</td>
+            <td class="inner-table">{{ $t->pnum }}</td>
+            <td class="inner-table">{{ $t->total }}</td>
+            <td class="inner-table">{{ $t->table_name }}</td>
             <td class="inner-table">{{ $t->time_slot }}</td>
+            <td class="inner-table">{{ $t->date }}</td>
         </tr>
         @endforeach
     </tbody>
@@ -61,9 +77,10 @@
     let table = new DataTable('#myTable');
 
     table.on('click', 'tbody tr', function() {
-        let data = table.row(this).data();
+        // let data = table.row(this).data();
+        let bookingId = $(this).data('id');
 
-        window.location.href = "{{ url('booking') }}/" + data[0];
+        window.location.href = "{{ url('booking') }}/" + bookingId;
     });
 </script>
 @endpush

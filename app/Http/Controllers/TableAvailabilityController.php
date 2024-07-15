@@ -15,17 +15,17 @@ class TableAvailabilityController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->user()->hasRole('admin')) $todos = TableAvailability::all();
-        else $todos = TableAvailability::where('user_id', $request->user()->id)->get();
+        if ($request->user()->hasRole('admin')) $bookings = TableAvailability::all();
+        else $bookings = TableAvailability::where('user_id', $request->user()->id)->get();
 
         // Add table_name to each $todos item
-        $todos->transform(function ($item) {
-            $item->table_name = $item->table->name; // Assuming 'name' is the column in the 'tables' table
-            $item->time_slot = \App\Models\Timeslot::where('id', $item->timeslot_id)->value('slot_name');
+        $bookings->transform(function ($item) {
+            $item->table_name = $item->table->name;
+            $item->time_slot = Timeslot::where('id', $item->timeslot_id)->value('slot_name');
             return $item;
         });
 
-        return view('booking', ['todo' => $todos]);
+        return view('booking', ['todo' => $bookings]);
     }
 
     /**
@@ -57,15 +57,15 @@ class TableAvailabilityController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $todos = TableAvailability::where('id', $id)->get();
-
+        if ($request->user()->hasRole('admin')) $todos = TableAvailability::where('id', $id)->get();
+        else $todos = TableAvailability::where('user_id', $request->user()->id)->where('id', $id)->get();
         // Add table_name to each $todos item
         $todos->transform(function ($item) {
-            $item->table_name = $item->table->name; // Assuming 'name' is the column in the 'tables' table
+            $item->table_name = $item->table->name;
             $item->picture_url = $item->table->picture_url;
-            $item->time_slot = \App\Models\Timeslot::where('id', $item->timeslot_id)->value('slot_name');
+            $item->time_slot = Timeslot::where('id', $item->timeslot_id)->value('slot_name');
             return $item;
         });
 
