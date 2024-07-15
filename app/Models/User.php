@@ -52,8 +52,8 @@ class User extends Authenticatable
     // {
     //     return $this->hasMany(Chirp::class);
     // }
-    // public function conversations(): BelongsToMany
+    // public function chats(): BelongsToMany
     // {
-    //     return $this->belongsToMany(Conversation::class);
+    //     return $this->belongsToMany(Chat::class);
     // }
 }

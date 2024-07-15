@@ -7,8 +7,8 @@ use Illuminate\Database\Seeder;
 use App\Models\Role;
 use App\Models\Timeslot;
 use App\Models\User;
-use App\Models\Chirp;
-use App\Models\Conversation;
+use App\Models\Message;
+use App\Models\Chat;
 
 class DatabaseSeeder extends Seeder
 {
@@ -35,12 +35,11 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(AdminSeeder::class);
         $this->call(TimeslotSeeder::class);
-        $conversation = Conversation::create();
-        Chirp::create([
+        $chat = Chat::create();
+        Message::create([
             'sender_id' => '1',
-            'receiver_id' => '2',
             'message' => 'Yo Bud',
-            'conversation_id' => $conversation->id,
+            'chat_id' => $chat->id,
         ]);
         $this->call(TablesSeeder::class);
         $this->call(TableAvailabilitySeeder::class);

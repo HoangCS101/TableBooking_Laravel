@@ -121,101 +121,11 @@
 @push('js')
 <script>
     $(document).ready(function() {
-        // Function to fetch messages from server
-        function fetchMessages() {
-            $.ajax({
-                url: '/chirps', // Update with your Laravel route URL
-                method: 'GET',
-                success: function(response) {
-                    // Clear existing messages
-                    $('#chat').empty();
-                    // console.log(response);
-                    // Append fetched messages to chatbox
-                    response.messages.forEach(function(message) {
-                        // var messageTypeClass = (message.sender_id == 1) ? 'me' : 'you';
-                        // var messageSenderName = (message.sender_id == 1) ? 'admin' : 'user';
-                        // console.log(message.name);
-                        var messageHTML = `
-                            <li class="${message.type}">
-                                <div class="entete">
-                                    <h2>${message.name}</h2>
-                                    <h3>${message.created_at}</h3>
-                                </div>
-                                <div class="triangle"></div>
-                                <div class="message">
-                                    ${message.message}
-                                </div>
-                            </li>
-                        `;
-                        $('#chat').append(messageHTML);
-                    });
-                    $('#chat').scrollTop($('#chat')[0].scrollHeight);
-                },
-                error: function(xhr, status, error) {
-                    // console.log(response);
-                    console.error('Error fetching messages:', error);
-                }
-            });
-        }
+        let globalVar = null;
 
-        // Fetch messages initially on page load
-        fetchMessages();
-
-        // Set interval to fetch messages periodically (e.g., every 5 seconds)
-        setInterval(fetchMessages, 500); // Adjust interval as needed
-    });
-</script>
-<script>
-    $(document).ready(function() {
-        function sendMessage() {
-            // event.preventDefault();
-            console.log('clicked');
-            var message = $('#messageInput').val();
-            console.log(message);
-            if (message === '') {
-                return; // Exit if the message is empty
-            }
-            var csrfToken = $('meta[name="csrf-token"]').attr('content');
-            // AJAX request to send the message
-            $.ajax({
-                url: '/chirps', // Update with your Laravel route URL
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken // Set the CSRF token in the headers
-                },
-                data: {
-                    message: message
-                },
-                success: function(response) {
-                    console.log('Message sent successfully:', response);
-                    $('#messageInput').val(''); // Clear the message input field
-                    // Optionally, update the chatbox with the sent message (not implemented here)
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error sending message:', error);
-                }
-            });
-        }
-        // Handle click event on the "Send" link
-        $('#sendMessage').click(function(event) {
-            event.preventDefault();
-            sendMessage(); // Call the sendMessage function
-        });
-
-        // Handle key press event in the textarea (Enter key)
-        $('#messageInput').keypress(function(event) {
-            if (event.which === 13) { // Check if Enter key is pressed (key code 13)
-                event.preventDefault(); // Prevent default Enter behavior (new line)
-                sendMessage(); // Call the sendMessage function
-            }
-        });
-    });
-</script>
-<script>
-    $(document).ready(function() {
         function fetchUsers() {
             $.ajax({
-                url: '/conversations/online',
+                url: '/chat/online',
                 method: 'GET',
                 success: function(response) {
                     // Clear existing messages
@@ -223,12 +133,12 @@
 
                     response.users.forEach(function(user) {
                         var messageHTML = `
-                            <a href="#" id="online" data-id="${user.id}">
+                            <a href="#" data-id="${user.chat_id}">
                             <li>
                             <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt="">
                             <div>
                                 <h2>${user.name}</h2>
-                                <h2>Conv ID : ${user.conversation_id}</h2>
+                                <h2>ChatID : ${user.chat_id}</h2>
                                 <h3>
                                     <span class="status green"></span>
                                     online
@@ -246,13 +156,96 @@
             });
         }
 
+        function fetchMessages(globalVar) {
+            if (globalVar == null)  return;
+            console.log(globalVar);
+            $.ajax({
+                url: '/chat/'+globalVar,
+                method: 'GET',
+                success: function(response) {
+                    // Clear existing messages
+                    $('#chat').empty();
+
+                    response.messages.forEach(function(message) {
+                        var messageHTML = `
+                            <li class="${message.type}">
+                                <div class="entete">
+                                    <h2>${message.name}</h2>
+                                    <h3>${message.created_at}</h3>
+                                </div>
+                                <div class="triangle"></div>
+                                <div class="message">
+                                    ${message.message}
+                                </div>
+                            </li>
+                        `;
+                        $('#chat').append(messageHTML);
+                    });
+                    $('#chat').scrollTop($('#chat')[0].scrollHeight);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching messages:', error);
+                }
+            });
+        }
+
+        function sendMessage() {
+            console.log('clicked');
+            var message = $('#messageInput').val();
+            console.log(message);
+            if (message === '') return;
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            // AJAX request to send the message
+            $.ajax({
+                url: '/chat/'+globalVar,
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                data: {
+                    message: message
+                },
+                success: function(response) {
+                    console.log('Message sent successfully:', response);
+                    $('#messageInput').val('');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error sending message:', error);
+                }
+            });
+        }
+
+        $('#users').on('click', 'a', function(event) { // 'a' -> any
+            event.preventDefault();
+            var chatId = $(this).data('id');
+            console.log('Clicked chat id:', chatId);
+            globalVar = chatId;
+        });
+
+        // Handle click event on the "Send" link
+        $('#sendMessage').click(function(event) {
+            event.preventDefault();
+            sendMessage(); // Call the sendMessage function
+        });
+
+        // Handle key press event in the textarea (Enter key)
+        $('#messageInput').keypress(function(event) {
+            if (event.which === 13) { // Check if Enter key is pressed (key code 13)
+                event.preventDefault(); // Prevent default Enter behavior (new line)
+                sendMessage(); // Call the sendMessage function
+            }
+        });
+
         // Fetch on page load
         fetchUsers();
 
-        // $('#users').on('click', '#online', function(event) {
-        //     event.preventDefault();
-        //     console.log('Online link was clicked');
-        // });S
+        // // Fetch messages initially on page load
+        fetchMessages(globalVar);
+
+        // Set interval to fetch messages periodically (e.g., every 0.5 seconds)
+        setInterval(function() {
+            fetchMessages(globalVar); // Fetch messages using the current globalVar
+        }, 500);
     });
 </script>
 @endpush

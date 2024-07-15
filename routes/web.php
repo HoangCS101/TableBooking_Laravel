@@ -10,9 +10,8 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\TimeslotController;
-use App\Http\Controllers\ChirpController;
-use App\Http\Controllers\ConversationController;
-use App\Models\Conversation;
+use App\Http\Controllers\ChatController;
+use App\Models\Chat;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,13 +80,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/conversations', [ConversationController::class, 'index']);
-Route::get('/conversations/online', [ConversationController::class, 'online']);
+// Chatbox Routing
+Route::get('/chat', [ChatController::class, 'index']);
+Route::get('/chat/online', [ChatController::class, 'checkOnline']);
+Route::get('/chat/{chatId}', [ChatController::class, 'viewChat']);
+Route::post ('/chat/{chatId}', [ChatController::class, 'sendMessage']);
 
-Route::get('/chirps', [ChirpController::class, 'getMessages']);
-Route::post('/chirps', [ChirpController::class, 'sendMessage']);
-// Route::resource('chirps', ChirpController::class)
-//     ->only(['index', 'store', 'edit', 'update', 'destroy'])
-//     ->middleware(['auth', 'verified']);
+// Route::get('/chirps', [ChirpController::class, 'getMessages']);
+// Route::post('/chirps', [ChirpController::class, 'sendMessage']);
 
 require __DIR__ . '/auth.php';

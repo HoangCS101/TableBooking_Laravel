@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Chirp;
+use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Log;
 
-class ChirpController extends Controller
+class MessageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -40,7 +40,7 @@ class ChirpController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Chirp $chirp)
+    public function show(Message $chirp)
     {
         //
     }
@@ -48,7 +48,7 @@ class ChirpController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Chirp $chirp)//: View
+    public function edit(Message $chirp)//: View
     {
         // Gate::authorize('update', $chirp);
     }
@@ -56,7 +56,7 @@ class ChirpController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Chirp $chirp)//: RedirectResponse
+    public function update(Request $request, Message $chirp)//: RedirectResponse
     {
         // Gate::authorize('update', $chirp);
 
@@ -65,7 +65,7 @@ class ChirpController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Chirp $chirp)//: RedirectResponse
+    public function destroy(Message $chirp)//: RedirectResponse
     {
         // Gate::authorize('delete', $chirp);
     }
@@ -75,7 +75,7 @@ class ChirpController extends Controller
         // Example: Fetch messages from database
         $user = $request->user();
 
-        $messages = Chirp::select('message', 'sender_id', 'receiver_id', 'created_at')
+        $messages = Message::select('message', 'sender_id', 'receiver_id', 'created_at')
                             ->orderBy('created_at', 'asc')
                             ->get();
 
@@ -96,7 +96,7 @@ class ChirpController extends Controller
     public function sendMessage(Request $request) {
         $user = $request->user();
         // Log::info($user->id);
-        $message = new Chirp();
+        $message = new Message();
         $message->message = $request->input('message');
         $message->conversation_id = 1;
         $message->sender_id = $user->id;
