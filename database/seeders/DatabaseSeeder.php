@@ -43,5 +43,8 @@ class DatabaseSeeder extends Seeder
         ]);
         $this->call(TablesSeeder::class);
         $this->call(TableAvailabilitySeeder::class);
+        $this->call([
+            ChatRoomSeeder::class
+        ]);
     }
 }

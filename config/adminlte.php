@@ -373,6 +373,11 @@ return [
             'url' => 'profile',
             'icon' => 'fas fa-fw fa-user',
         ],
+        [
+            'text' => 'Chat',
+            'url' => 'chat',
+            'icon' => 'fas fa-fw fa-comment',
+        ],
         // [
         //     'text' => 'change_password',
         //     'url' => 'admin/settings',
