@@ -36,15 +36,15 @@ class ChatController extends Controller
     //     return $newMessage;
     // }
 
-    public function index(Request $request)
-    {
-        $user = $request->user();
-        // $chats = Chat::whereHas('users', function ($query) use ($user) {
-        //     $query->where('users.id', $user->id);
-        // })->get();
-        $chats = Chat::find(1)->messages()->pluck('message');
-        return response()->json(['chats' => $chats]);
-    }
+    // public function index(Request $request)
+    // {
+    //     $user = $request->user();
+    //     // $chats = Chat::whereHas('users', function ($query) use ($user) {
+    //     //     $query->where('users.id', $user->id);
+    //     // })->get();
+    //     $chats = Chat::find(1)->messages()->pluck('message');
+    //     return response()->json(['chats' => $chats]);
+    // }
     public function checkOnline(Request $request)
     {
         $currentUser = $request->user();

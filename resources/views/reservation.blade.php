@@ -33,12 +33,12 @@
                     </div>
                     <div class="form-group">
                         <label>Timeslot</label>
-                        <select class="form-control select2 select2-hidden-accessible" style="width: 30%;" id="TS" name="time_slot" onchange="showTable()" tabindex="-1" aria-hidden="true">
+                        <select class="form-control select2 select2-hidden-accessible" style="width: 30%;" id="time_slot" name="time_slot" onchange="showTable()" tabindex="-1" aria-hidden="true">
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Available Tables</label>
-                        <select class="form-control select2 select2-hidden-accessible" style="width: 30%;" id="timeslot" name="timeslot" tabindex="-1" aria-hidden="true" onchange="preview()">
+                        <select class="form-control select2 select2-hidden-accessible" style="width: 30%;" id="table" name="table" tabindex="-1" aria-hidden="true" onchange="preview()">
                             <option value="">Select Date and Time</option>
                         </select>
                     </div>
@@ -87,37 +87,54 @@
     xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("TS").innerHTML = this.responseText;
+            document.getElementById("time_slot").innerHTML = this.responseText;
         }
     };
     xhttp.open("GET", "/timeslot/list", true);
     xhttp.send();
 </script>
 <script>
-    function showTable() {
-        var timeslot = document.getElementById("TS").value;
+    function showTable(str) {
+        var timeslot = document.getElementById("time_slot").value;
         var date = document.getElementById("date").value;
 
         var xhttp;
         xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("timeslot").innerHTML = this.responseText;
-                // timeslot is for Available Tables, basically you want to see if anyone has taken your desired table and what's left for ya.
+                var responseData = JSON.parse(this.responseText); // Parse JSON response
+
+                // Clear existing table content
+                var tableElement = document.getElementById("table");
+                tableElement.innerHTML = '';
+
+                // Build HTML based on JSON data
+                responseData.forEach(function(option) {
+                    var optionHTML = '<option value="' + option.value + '">' + option.name + '</option>';
+                    tableElement.innerHTML += optionHTML;
+                });
             }
         };
-        xhttp.open("GET", "/booking/filter" + "/" + encodeURIComponent(date) + "/" + timeslot, true);
+        xhttp.open("GET", "/booking/filter" + "/" + encodeURIComponent(date) + "/" + encodeURIComponent(timeslot), true);
         xhttp.send();
     }
 
     function preview() {
-        var table_id = document.getElementById("timeslot").value;
+        var table_id = document.getElementById("table").value;
 
         var xhttp;
         xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("preview").innerHTML = this.responseText;
+                var responseData = JSON.parse(this.responseText); // Parse JSON response
+                
+                // Clear existing table content
+                var tableElement = document.getElementById("preview");
+                tableElement.innerHTML = '';
+
+                var previewHTML = '<img src="' + responseData.picture_url + '" alt="Photo 2" class="img-fluid" style="width: 100%; height: auto;">' +
+                    '<p style="margin-top: 20px"><strong>Description: </strong>' + responseData.description + '</p>';
+                tableElement.innerHTML += previewHTML;
             }
         };
         xhttp.open("GET", "/booking/preview/" + table_id, true);

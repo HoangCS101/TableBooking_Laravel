@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ValidateRequest extends FormRequest
+class ReservationForm extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +25,8 @@ class ValidateRequest extends FormRequest
             'name' => 'required|string|max:255',
             'phone_num' => 'required|string|max:20',
             'date' => 'required|date',
+            'table' => 'required',
             'time_slot' => 'required',
-            'timeslot' => 'required',
-            // 'description' => 'string',
-            // 'picture_url' => 'required'
         ];
     }
 }

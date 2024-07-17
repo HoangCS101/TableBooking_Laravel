@@ -77,7 +77,6 @@
     let table = new DataTable('#myTable');
 
     table.on('click', 'tbody tr', function() {
-        // let data = table.row(this).data();
         let bookingId = $(this).data('id');
 
         window.location.href = "{{ url('booking') }}/" + bookingId;

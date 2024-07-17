@@ -9,7 +9,6 @@
 {{-- Content body: main page content --}}
 
 @section('content_body')
-@foreach( $todo as $t )
 <div class="container">
     <div class="col-sm-4">
         <div class="position-relative">
@@ -73,13 +72,13 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Timeslot</label>
-                                        <select class="form-control select2 select2-hidden-accessible" style="width: 50%;" id="TS" name="time_slot" value="{{ $t->time_slot }}" onchange="showTable()" tabindex="-1" aria-hidden="true">
+                                        <select class="form-control select2 select2-hidden-accessible" style="width: 50%;" id="time_slot" name="time_slot" value="{{ $t->time_slot }}" onchange="showTable()" tabindex="-1" aria-hidden="true">
 
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label>Available Tables</label>
-                                        <select class="form-control select2 select2-hidden-accessible" style="width: 50%;" id="timeslot" name="timeslot" tabindex="-1" aria-hidden="true">
+                                        <select class="form-control select2 select2-hidden-accessible" style="width: 50%;" id="table" name="table" tabindex="-1" aria-hidden="true">
                                             <option value="{{ $t->table_id }}">{{ $t->table_name }}</option>
                                         </select>
                                     </div>
@@ -89,10 +88,6 @@
                                 </div>
                             </form>
                         </div>
-                        <!-- <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -102,7 +97,6 @@
             elseif ($t->state == 'unlocked') echo '<button type="button" class="btn btn-secondary border">Pay</button>';
             else echo '<button type="button" class="btn btn-success border">Paid</button>';
             ?>
-            <!-- <button type="button" class="btn btn-secondary border" data-toggle="modal" data-target="#paymentModal">Pay</button> -->
             <!-- Modal -->
             <div class="modal fade" id="paymentModal" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -139,7 +133,6 @@
         @endif
     </div>
 </div>
-@endforeach
 @stop
 
 {{-- Push extra CSS --}}
@@ -150,43 +143,29 @@
 <style>
     .custom-btn {
         background-color: #c1177c;
-        /* Pinkish red background */
         border-color: #c1177c;
-        /* Matching border color */
         color: white;
-        /* White text color */
         padding: 10px 20px;
-        /* Adjust padding to create space for icon */
         position: relative;
-        /* Position relative to allow absolute positioning */
         width: 100%;
     }
 
     .custom-btn:hover {
         background-color: #a00d5f;
-        /* Darker pinkish red on hover */
         border-color: #a00d5f;
-        /* Matching border color on hover */
     }
 
     .custom-btn .btn-icon {
         position: absolute;
-        /* Position the icon absolutely */
         left: 2.5px;
-        /* Fixed left position of the icon */
         top: 50%;
-        /* Align icon vertically */
         transform: translateY(-50%);
-        /* Center icon vertically */
         width: 45px;
-        /* Fixed width of the icon */
         height: auto;
-        /* Fixed height of the icon */
     }
 
     .custom-btn .btn-text {
         padding-left: 40px;
-        /* Adjust padding to create space for the icon */
     }
 </style>
 @endpush
@@ -199,8 +178,7 @@
     xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-            // console.log(this.responseText);
-            document.getElementById("TS").innerHTML = this.responseText;
+            document.getElementById("time_slot").innerHTML = this.responseText;
         }
     };
     xhttp.open("GET", "/timeslot/list", true);
@@ -208,7 +186,6 @@
 </script>
 <script>
     function clicked(id) {
-        // console.log('Clicked ID:', id);
         // AJAX request to delete resource
         if (confirm('Are you sure you want to delete this item?')) {
             fetch("{{ url('booking') }}/" + id, {
@@ -236,14 +213,24 @@
     }
 
     function showTable(str) {
-        var timeslot = document.getElementById("TS").value;
+        var timeslot = document.getElementById("time_slot").value;
         var date = document.getElementById("date").value;
 
         var xhttp;
         xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("timeslot").innerHTML = this.responseText;
+                var responseData = JSON.parse(this.responseText); // Parse JSON response
+                
+                // Clear existing table content
+                var tableElement = document.getElementById("table");
+                tableElement.innerHTML = '';
+
+                // Build HTML based on JSON data
+                responseData.forEach(function(option) {
+                    var optionHTML = '<option value="' + option.value + '">' + option.name + '</option>';
+                    tableElement.innerHTML += optionHTML;
+                });
             }
         };
         xhttp.open("GET", "/booking/filter" + "/" + encodeURIComponent(date) + "/" + encodeURIComponent(timeslot), true);
@@ -291,13 +278,10 @@
         // Find the distance between now and the count down date
         var distance = countDownDate - now;
 
-        // // Time calculations for days, hours, minutes and seconds
-        // var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        // var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        // Time calculations for minutes and seconds
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        // Output the result in an element with id="demo"
         document.getElementById("demo").innerHTML = '<small>Time Remaining: </small>' + minutes + "m " + seconds + "s ";
 
         // If the count down is over, write some text 

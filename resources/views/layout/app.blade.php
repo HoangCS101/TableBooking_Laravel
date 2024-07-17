@@ -92,12 +92,11 @@
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script>
     let globalVar = null;
+    
     // Pusher.logToConsole = true;
-
     var pusher = new Pusher('fbd1b1e67dcce929509f', {
         cluster: 'ap1'
     });
-
     let channel = null;
 
     function fetchUsers() {
@@ -199,7 +198,7 @@
     $('#users').on('click', 'a', function(event) { // 'a' -> any
         event.preventDefault();
         var chatId = $(this).data('id');
-        // console.log('Clicked chat id:', chatId);
+        
         globalVar = chatId;
         if (channel) {
             channel.unbind(); // Unbind previous bindings

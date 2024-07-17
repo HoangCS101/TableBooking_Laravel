@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ValidateRequest;
+use App\Http\Requests\ReservationForm;
 use Illuminate\Http\Request;
 use App\Models\TableAvailability;
 use App\Models\Table;
@@ -39,19 +39,19 @@ class TableAvailabilityController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ValidateRequest $request)
+    public function store(ReservationForm $request)
     {
-        $todo = new TableAvailability();
-        $todo->guest_name = $request->input('name');
-        $todo->pnum = $request->input('phone_num');
-        $todo->table_id = $request->input('timeslot');
-        $todo->date = $request->input('date');
-        $todo->timeslot_id = $request->input('time_slot');
-        $todo->total = intval(Table::where('id',$todo->table_id)->value('price')) + intval(Timeslot::where('id',$todo->timeslot_id)->value('price'));
-        $todo->user_id = $request->user()->id;
+        $booking = new TableAvailability();
+        $booking->guest_name = $request->input('name');
+        $booking->pnum = $request->input('phone_num');
+        $booking->date = $request->input('date');
+        $booking->table_id = $request->input('table');
+        $booking->timeslot_id = $request->input('time_slot');
+        $booking->total = intval(Table::where('id', $booking->table_id)->value('price')) + intval(Timeslot::where('id', $booking->timeslot_id)->value('price'));
+        $booking->user_id = $request->user()->id;
 
-        $todo->save();
-        return redirect('/booking/'.$todo->id);
+        $booking->save();
+        return redirect('/booking/' . $booking->id);
     }
 
     /**
@@ -59,17 +59,24 @@ class TableAvailabilityController extends Controller
      */
     public function show(Request $request, $id)
     {
-        if ($request->user()->hasRole('admin')) $todos = TableAvailability::where('id', $id)->get();
-        else $todos = TableAvailability::where('user_id', $request->user()->id)->where('id', $id)->get();
-        // Add table_name to each $todos item
-        $todos->transform(function ($item) {
-            $item->table_name = $item->table->name;
-            $item->picture_url = $item->table->picture_url;
-            $item->time_slot = Timeslot::where('id', $item->timeslot_id)->value('slot_name');
-            return $item;
-        });
+        if ($request->user()->hasRole('admin')) {
+            $booking = TableAvailability::where('id', $id)->first();
+        } else {
+            $booking = TableAvailability::where('user_id', $request->user()->id)
+                ->where('id', $id)
+                ->first();
+        }
 
-        return view('table', ['todo' => $todos]);
+        if (!$booking) {
+            return abort(404);
+        }
+
+        // Additional data for $booking
+        $booking->table_name = $booking->table->name;
+        $booking->picture_url = $booking->table->picture_url;
+        $booking->time_slot = Timeslot::where('id', $booking->timeslot_id)->value('slot_name');
+
+        return view('table', ['t' => $booking]);
     }
 
     /**
@@ -83,19 +90,19 @@ class TableAvailabilityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ValidateRequest $request, string $id)
+    public function update(ReservationForm $request, string $id)
     {
-        $todo = TableAvailability::find($id);
-        $todo->guest_name = $request->input('name');
-        $todo->pnum = $request->input('phone_num');
-        $todo->table_id = $request->input('timeslot');
-        $todo->date = $request->input('date');
-        $todo->timeslot_id = $request->input('time_slot');
-        $todo->total = intval(Table::where('id',$todo->table_id)->value('price')) + intval(Timeslot::where('id',$todo->timeslot_id)->value('price'));
-        $todo->user_id = $request->user()->id;
+        $booking = TableAvailability::find($id);
+        $booking->guest_name = $request->input('name');
+        $booking->pnum = $request->input('phone_num');
+        $booking->date = $request->input('date');
+        $booking->table_id = $request->input('table');
+        $booking->timeslot_id = $request->input('time_slot');
+        $booking->total = intval(Table::where('id', $booking->table_id)->value('price')) + intval(Timeslot::where('id', $booking->timeslot_id)->value('price'));
+        $booking->user_id = $request->user()->id;
 
-        $todo->update();
-        return redirect('/booking/'.$id);
+        $booking->update();
+        return redirect('/booking/' . $id);
     }
 
     /**
@@ -123,30 +130,36 @@ class TableAvailabilityController extends Controller
         // return "Filtering for $date and $timeslot";
         $bookedTableIds = TableAvailability::where('date', $date)
             ->where('timeslot_id', $timeslot)
-            ->where(function($query) {
+            ->where(function ($query) {
                 $query->where('state', 'locked')
-                      ->orWhere('state', 'paid');
+                    ->orWhere('state', 'paid');
             })
             ->pluck('table_id')
             ->toArray();
-        
+
         // Get tables that are NOT in the $bookedTableIds array
         $availableTables = Table::whereNotIn('id', $bookedTableIds)
             ->select('id', 'name')
             ->get();
 
-        $options = '';
+        $options = [];
         foreach ($availableTables as $table) {
-            $options .= '<option value="' . $table->id . '">' . $table->name . '</option>';
+            $options[] = [
+                'value' => $table->id,
+                'name' => $table->name,
+            ];
         }
-        echo $options;
+        return response()->json($options);
     }
 
-    public function tablePreview(string $id) {
+    public function previewTable(string $id)
+    {
         $table = Table::findOrFail($id);
-        $preview = '';
-        $preview .= '<img src="' . $table->picture_url. '" alt="Photo 2" class="img-fluid" style="width: 100%; height: auto;">';
-        $preview .= '<p style="margin-top: 20px"><strong>Description: </strong>' . $table->description . '</p>';
-        echo $preview;
+
+        $previewData = [
+            'picture_url' => $table->picture_url,
+            'description' => $table->description,
+        ];
+        return response()->json($previewData);
     }
 }

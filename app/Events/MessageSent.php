@@ -32,7 +32,7 @@ class MessageSent implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
-        return ['chat.'.$this->chatMessage->chat_id ];
+        return ['chat.'.$this->chatMessage->chat_id ]; // Array -> there might be a list of channels you want to broadcast on.
     }
     public function broadcastAs()
     {

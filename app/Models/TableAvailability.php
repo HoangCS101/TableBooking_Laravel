@@ -10,7 +10,7 @@ class TableAvailability extends Model
     use HasFactory;
     
     protected $fillable = [
-        'table_id', 'guest_name', 'pnum', 'date', 'timeslot_id', 'user_id',
+        'guest_name', 'pnum', 'date', 'table_id', 'timeslot_id'
         // here user_id is ID of the User who makes the booking, since one can make table reservation for someone else
     ];
 
