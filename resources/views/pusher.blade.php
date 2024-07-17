@@ -1,16 +1,13 @@
 <!DOCTYPE html>
-
 <head>
   <title>Pusher Test</title>
   <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
   <script>
-    require('dotenv').config();
 
-    
     // Enable pusher logging - don't include this in production
     Pusher.logToConsole = true;
 
-    var pusher = new Pusher(process.env.PUSHER_APP_KEY, {
+    var pusher = new Pusher('fbd1b1e67dcce929509f', {
       cluster: 'ap1'
     });
 
@@ -20,7 +17,6 @@
     });
   </script>
 </head>
-
 <body>
   <h1>Pusher Test</h1>
   <p>

@@ -43,7 +43,7 @@
                         <input type="text" placeholder="search">
                     </header>
                     <ul id="users">
-                        
+
                     </ul>
                 </aside>
                 <main>
@@ -89,20 +89,27 @@
 {{-- Add common Javascript/Jquery code --}}
 
 @push('js')
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script>
-    $(document).ready(function() {
-        let globalVar = null;
+    let globalVar = null;
+    // Pusher.logToConsole = true;
 
-        function fetchUsers() {
-            $.ajax({
-                url: '/chat/online',
-                method: 'GET',
-                success: function(response) {
-                    // Clear existing messages
-                    $('#users').empty();
+    var pusher = new Pusher('fbd1b1e67dcce929509f', {
+        cluster: 'ap1'
+    });
 
-                    response.users.forEach(function(user) {
-                        var messageHTML = `
+    let channel = null;
+
+    function fetchUsers() {
+        $.ajax({
+            url: '/chat/online',
+            method: 'GET',
+            success: function(response) {
+                // Clear existing messages
+                $('#users').empty();
+
+                response.users.forEach(function(user) {
+                    var messageHTML = `
                             <a href="#" data-id="${user.chat_id}">
                             <li>
                             <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt="">
@@ -117,28 +124,28 @@
                             </li>
                             </a>
                         `;
-                        $('#users').append(messageHTML);
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error fetching messages:', error);
-                }
-            });
-        }
+                    $('#users').append(messageHTML);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching messages:', error);
+            }
+        });
+    }
 
-        function fetchMessages(globalVar) {
-            if (globalVar == null) return;
-            console.log(globalVar);
-            $.ajax({
-                url: '/chat/'+globalVar,
-                method: 'GET',
-                success: function(response) {
-                    // Clear existing messages
-                    $('#chat').empty();
-                    $('#header').empty();
+    function fetchMessages(globalVar) {
+        if (globalVar == null) return;
+        console.log(globalVar);
+        $.ajax({
+            url: '/chat/' + globalVar,
+            method: 'GET',
+            success: function(response) {
+                // Clear existing messages
+                $('#chat').empty();
+                $('#header').empty();
 
-                    response.messages.forEach(function(message) {
-                        var messageHTML = `
+                response.messages.forEach(function(message) {
+                    var messageHTML = `
                             <li class="${message.type}">
                                 <div class="entete">
                                     <h2>${message.name}</h2>
@@ -150,79 +157,77 @@
                                 </div>
                             </li>
                         `;
-                        $('#chat').append(messageHTML);
-                    });
-                    $('#chat').scrollTop($('#chat')[0].scrollHeight);
-                    var header = `
+                    $('#chat').append(messageHTML);
+                });
+                $('#chat').scrollTop($('#chat')[0].scrollHeight);
+                var header = `
                         <h2>Chat with Thunder</h2>
                         <h3>already 1902 messages</h3>
                     `;
-                    $('#header').append(header);
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error fetching messages:', error);
-                }
-            });
-        }
-
-        function sendMessage() {
-            console.log('clicked');
-            var message = $('#messageInput').val();
-            console.log(message);
-            if (message === '') return;
-            var csrfToken = $('meta[name="csrf-token"]').attr('content');
-            // AJAX request to send the message
-            $.ajax({
-                url: '/chat/'+globalVar,
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                data: {
-                    message: message
-                },
-                success: function(response) {
-                    console.log('Message sent successfully:', response);
-                    $('#messageInput').val('');
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error sending message:', error);
-                }
-            });
-        }
-
-        $('#users').on('click', 'a', function(event) { // 'a' -> any
-            event.preventDefault();
-            var chatId = $(this).data('id');
-            console.log('Clicked chat id:', chatId);
-            globalVar = chatId;
-        });
-
-        // Handle click event on the "Send" link
-        $('#sendMessage').click(function(event) {
-            event.preventDefault();
-            sendMessage(); // Call the sendMessage function
-        });
-
-        // Handle key press event in the textarea (Enter key)
-        $('#messageInput').keypress(function(event) {
-            if (event.which === 13) { // Check if Enter key is pressed (key code 13)
-                event.preventDefault(); // Prevent default Enter behavior (new line)
-                sendMessage(); // Call the sendMessage function
+                $('#header').append(header);
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching messages:', error);
             }
         });
+    }
 
-        // Fetch on page load
-        fetchUsers();
+    function sendMessage() {
+        var message = $('#messageInput').val();
+        if (message === '') return;
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        // AJAX request to send the message
+        $.ajax({
+            url: '/chat/' + globalVar,
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            data: {
+                message: message
+            },
+            success: function(response) {
+                console.log('Message sent successfully:', response);
+                $('#messageInput').val('');
+            },
+            error: function(xhr, status, error) {
+                console.error('Error sending message:', error);
+            }
+        });
+    }
 
-        // // Fetch messages initially on page load
-        fetchMessages(globalVar);
-
-        // Set interval to fetch messages periodically (e.g., every 0.5 seconds)
-        setInterval(function() {
-            fetchMessages(globalVar); // Fetch messages using the current globalVar
-        }, 500);
+    $('#users').on('click', 'a', function(event) { // 'a' -> any
+        event.preventDefault();
+        var chatId = $(this).data('id');
+        // console.log('Clicked chat id:', chatId);
+        globalVar = chatId;
+        if (channel) {
+            channel.unbind(); // Unbind previous bindings
+            channel.unsubscribe();
+        }
+        channel = pusher.subscribe('chat.' + chatId);
+        channel.bind('new-message', function(data) {
+            fetchMessages(chatId);
+        });
+        fetchMessages(chatId);
     });
+
+    // Handle click event on the "Send" link
+    $('#sendMessage').click(function(event) {
+        event.preventDefault();
+        sendMessage(); // Call the sendMessage function
+    });
+
+    // Handle key press event in the textarea (Enter key)
+    $('#messageInput').keypress(function(event) {
+        if (event.which === 13) { // Check if Enter key is pressed (key code 13)
+            event.preventDefault(); // Prevent default Enter behavior (new line)
+            sendMessage(); // Call the sendMessage function
+        }
+    });
+
+    // Fetch on page load
+    fetchUsers();
 </script>
 @endpush
 

@@ -9,7 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-Use App\Models\ChatMessage;
+Use App\Models\Message;
 
 class MessageSent implements ShouldBroadcast
 {
@@ -20,7 +20,7 @@ class MessageSent implements ShouldBroadcast
     /**
      * Create a new event instance.
      */
-    public function __construct(ChatMessage $chatMessage)
+    public function __construct(Message $chatMessage)
     {
         $this->chatMessage = $chatMessage;
     }
@@ -32,8 +32,10 @@ class MessageSent implements ShouldBroadcast
      */
     public function broadcastOn(): array
     {
-        return [
-            new PrivateChannel('chat.'.$this->chatMessage->chat_room_id),
-        ];
+        return ['chat.'.$this->chatMessage->chat_id ];
+    }
+    public function broadcastAs()
+    {
+        return 'new-message';
     }
 }

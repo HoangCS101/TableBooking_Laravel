@@ -86,4 +86,10 @@ Route::get('/chat/online', [ChatController::class, 'checkOnline']);
 Route::get('/chat/{chatId}', [ChatController::class, 'viewChat']);
 Route::post ('/chat/{chatId}', [ChatController::class, 'sendMessage']);
 
+Route::get('/pushertest', function () {
+    return view('pusher');
+});
+
+
+
 require __DIR__ . '/auth.php';
