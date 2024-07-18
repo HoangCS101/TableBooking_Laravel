@@ -79,6 +79,30 @@
         </div>
     </div>
 </div>
+@if ($errors->any())
+<div class="modal" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Update Errors</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 @stop
 
 {{-- Push extra CSS --}}
@@ -107,25 +131,21 @@
 
 @push('js')
 <script>
-    console.log("Hi, I'm using the Laravel-AdminLTE package!");
+    $(document).ready(function() {
+        $('#errorModal').modal('show');
+    });
 </script>
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
-<!-- <script>
-    $(document).ready(function() {
-        $('#myTable').DataTable();
-    });
-</script> -->
 <script>
-    let globalVar;
+    let tableId;
 
     function clicked() {
-        // console.log('Clicked ID:', id);
         // AJAX request to delete resource
         if (confirm('Are you sure you want to delete this item?')) {
-            fetch("{{ url('table') }}/" + globalVar, {
+            fetch("{{ url('table') }}/" + tableId, {
                     method: 'DELETE',
                     headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}', // Add CSRF token if using Laravel CSRF protection
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}', // Add CSRF token using Laravel CSRF protection
                         'Content-Type': 'application/json'
                     }
                 })
@@ -186,19 +206,19 @@
         table.on('click', 'tbody tr', function() {
             let data = table.row(this).data();
             $('#exampleModalLabel').text(data[1]);
-            globalVar = data[0];
+            tableId = data[0];
 
             let $modalImage = $('#exampleModal').find('.modal-body img');
             $modalImage.attr('src', data[4]);
 
             let $modalLink = $('#exampleModal').find('#pictureLink');
             $modalLink.attr('href', data[4]);
-            
+
             $('#exampleModal').find('#name').attr('value', data[1]);
             $('#exampleModal').find('#description').val(data[2]);
             $('#exampleModal').find('#price').attr('value', data[3]);
             $('#exampleModal').find('#picture_url').attr('value', data[4]);
-            $('#exampleModal').find('#form').attr('action', '/table/'+data[0]);
+            $('#exampleModal').find('#form').attr('action', '/table/' + data[0]);
 
             let modal = new bootstrap.Modal(document.getElementById('exampleModal'));
             modal.show();

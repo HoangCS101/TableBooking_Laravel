@@ -29,7 +29,7 @@
                 <form action="/timeslot/{{$t->id}}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this permission?')">Delete</button>
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this timeslot?')">Delete</button>
                 </form>
             </td>
         </tr>
@@ -114,9 +114,6 @@
 {{-- Push extra scripts --}}
 
 @push('js')
-<script>
-    console.log("Hi, I'm using the Laravel-AdminLTE package!");
-</script>
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
 <script>
     $(document).ready(function() {

@@ -67,7 +67,7 @@
         </div>
     </div>
 </div>
-<!-- Modal for Viewing Table Details -->
+<!-- Modal for editing role name -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -132,9 +132,6 @@
 {{-- Push extra scripts --}}
 
 @push('js')
-<script>
-    console.log("Hi, I'm using the Laravel-AdminLTE package!");
-</script>
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
 <script>
     $(document).ready(function() {
@@ -147,7 +144,7 @@
         // Example of populating form fields
         var modal = $(this);
         modal.find('.modal-body #editRoleName').val(button.data('name'));
-        modal.find('.modal-body #editGuardName').val(button.data('guard-name'));
+        // modal.find('.modal-body #editGuardName').val(button.data('guard-name'));
 
         // Adjust the form action URL if necessary
         modal.find('#editRoleForm').attr('action', '/admin/roles/' + id);

@@ -27,7 +27,7 @@ class UnlockExpiredData extends Command
      */
     public function handle()
     {
-        $threshold = Carbon::now()->subMinutes(3);
+        $threshold = Carbon::now()->subMinutes(15);
         
         TableAvailability::where('created_at', '<=', $threshold)->where('state', 'locked')->update(['state' => 'unlocked']);;
 

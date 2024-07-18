@@ -33,6 +33,15 @@
                 <input type="text" class="form-control" id="picture_url" name='picture_url' placeholder="Add Picture URL">
             </div>
         </div>
+        @if ($errors->any())
+        <div class="alert alert-danger" style="width: 95%;margin-left:2.5%">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
         <div class="card-footer">
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>

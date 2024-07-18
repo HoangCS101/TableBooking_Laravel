@@ -18,7 +18,7 @@ class TableAvailabilityController extends Controller
         if ($request->user()->hasRole('admin')) $bookings = TableAvailability::all();
         else $bookings = TableAvailability::where('user_id', $request->user()->id)->get();
 
-        // Add table_name to each $todos item
+        // Add table_name and time_slot to each $todos item
         $bookings->transform(function ($item) {
             $item->table_name = $item->table->name;
             $item->time_slot = Timeslot::where('id', $item->timeslot_id)->value('slot_name');
@@ -111,16 +111,10 @@ class TableAvailabilityController extends Controller
     public function destroy(string $id)
     {
         try {
-            // Find the record with the given ID
             $todo = TableAvailability::findOrFail($id);
-
-            // Delete the record
             $todo->delete();
-
-            // Optionally, you can return a response indicating success
             return response()->json(['message' => 'Record deleted successfully'], 200);
         } catch (\Exception $e) {
-            // Handle any exceptions, such as if the record does not exist
             return response()->json(['error' => 'Failed to delete record: ' . $e->getMessage()], 500);
         }
     }

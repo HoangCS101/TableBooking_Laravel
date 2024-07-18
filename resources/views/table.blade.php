@@ -121,18 +121,32 @@
                 </div>
             </div>
         </div>
-        @if ($errors->any())
-        <div id="errorAlert" class="alert alert-danger" style="width: 100%;">
-            Edit Failed!!!
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
     </div>
 </div>
+@if ($errors->any())
+<div class="modal" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Update Errors</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 @stop
 
 {{-- Push extra CSS --}}
@@ -173,6 +187,11 @@
 {{-- Push extra scripts --}}
 
 @push('js')
+<script>
+    $(document).ready(function() {
+        $('#errorModal').modal('show');
+    });
+</script>
 <script>
     var xhttp;
     xhttp = new XMLHttpRequest();
@@ -221,7 +240,7 @@
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 var responseData = JSON.parse(this.responseText); // Parse JSON response
-                
+
                 // Clear existing table content
                 var tableElement = document.getElementById("table");
                 tableElement.innerHTML = '';
@@ -238,35 +257,11 @@
     }
 </script>
 <script>
-    // Function to fade out the alert
-    function fadeOut(element) {
-        var opacity = 1;
-        var timer = setInterval(function() {
-            if (opacity <= 0.01) {
-                clearInterval(timer);
-                element.style.display = 'none';
-            }
-            element.style.opacity = opacity;
-            opacity -= 0.01;
-        }, 50); // Adjust fade out speed (lower value means faster fade out)
-    }
-
-    // Fade out the alert after a delay
-    window.onload = function() {
-        var errorAlert = document.getElementById('errorAlert');
-        if (errorAlert) {
-            setTimeout(function() {
-                fadeOut(errorAlert);
-            }, 500);
-        } // Display duration before fade out (in milliseconds)
-    };
-</script>
-<script>
     // Parse the date-time string into a Date object
     var dateTime = new Date(time);
 
     // Add 3 minutes to the Date object
-    dateTime.setMinutes(dateTime.getMinutes() + 3);
+    dateTime.setMinutes(dateTime.getMinutes() + 15);
     // Set the date we're counting down to
     var countDownDate = new Date(dateTime).getTime();
     // Update the count down every 1 second

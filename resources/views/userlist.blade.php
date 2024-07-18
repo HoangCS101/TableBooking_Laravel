@@ -15,8 +15,8 @@
         <td>ID</td>
         <td>Name</td>
         <td>Email</td>
-        <td>Role</td>
         <td>Join Since</td>
+        <th>Actions</th>
     </thead>
 
     <tbody>
@@ -25,48 +25,37 @@
             <td>{{ $t->id }}</td>
             <td class="inner-table">{{ $t->name }}</td>
             <td class="inner-table">{{ $t->email }}</td>
-            <td class="inner-table">{{ $t->roles }}</td>
             <td class="inner-table">{{ $t->created_at }}</td>
+            <td>
+                <!-- <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" data-id="{{ $t->id }}" data-name="{{ $t->name }}" data-guard-name="{{ $t->guard_name }}">Edit</button> -->
+                <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#P" data-id="{{ $t->id }}" data-name="{{ $t->name }}" data-guard-name="{{ $t->guard_name }}">Roles</button>
+                <form action="/user/{{$t->id}}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
+                </form>
+            </td>
         </tr>
         @endforeach
     </tbody>
 </table>
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Modal for Viewing Roles -->
+<div class="modal fade" id="P" tabindex="-1" role="dialog" aria-labelledby="PLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <h5 class="modal-title" id="PLabel">Roles</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form method="POST" action="">
-                    @csrf
-                    @method("PUT")
-                    <label for="name">Modify Roles</label>
-                    <div class="row">
-                        <div class="col">
-                            <div class="form-group">
-                                <input type="text" class="form-control" id="role" name='role'>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-group">
-                                <select class="form-control select2 select2-hidden-accessible" style="width: 50%;" id="act" name="act" tabindex="-1" aria-hidden="true">
-                                    <option value="1">Give</option>
-                                    <option value="0">Take</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-secondary">Save Changes</button>
-                </form>
+                <div id="rolesList">
+
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" onclick="clicked()">Delete User</button>
             </div>
         </div>
     </div>
@@ -84,53 +73,37 @@
 {{-- Push extra scripts --}}
 
 @push('js')
-<script>
-    console.log("Hi, I'm using the Laravel-AdminLTE package!");
-</script>
 <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
 <script>
-    let globalVar;
-
-    function clicked() {
-        // console.log('Clicked ID:', id);
-        // AJAX request to delete resource
-        if (confirm('Are you sure you want to delete this user?')) {
-            fetch("{{ url('user') }}/" + globalVar, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}', // Add CSRF token if using Laravel CSRF protection
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => {
-                    if (response.ok) {
-                        // Handle successful deletion
-                        console.log('Resource deleted successfully');
-                        // Redirect to another page
-                        window.location.href = "{{ url('user') }}";
-                    } else {
-                        // Handle error response
-                        console.error('Error deleting resource');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-    }
     $(document).ready(function() {
         let table = $('#myTable').DataTable();
-        table.on('click', 'tbody tr', function() {
-            let data = table.row(this).data();
-            $('#exampleModalLabel').text(data[1]);
-            globalVar = data[0];
+    });
+    global = '';
+    // Function to load permissions for a role
+    function loadRoles(userId) {
+        global = userId;
+        var xhttp;
+        xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("rolesList").innerHTML = this.responseText;
+            }
+        };
+        xhttp.open("GET", "/user/" + userId + "/roles", true);
+        xhttp.send();
+    }
 
-            let $modalForm = $('#exampleModal').find('.modal-body form');
-            $modalForm.attr('action', '/user/' + globalVar);
+    function toggleRole(roleId) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "/user/" + global + "/" + roleId, true);
+        xhttp.send();
+    }
+    // Event listener for the Permissions button click
 
-            let modal = new bootstrap.Modal(document.getElementById('exampleModal'));
-            modal.show();
-        });
+    $('#P').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var userId = button.data('id'); // Extract role ID from data-id attribute
+        loadRoles(userId);
     });
 </script>
 @endpush

@@ -24,7 +24,6 @@ class TableAvailabilityFactory extends Factory
             'guest_name' => $this->faker->name,
             'pnum' => $this->faker->phoneNumber,
             'date' => $futureDate,
-            // 'time_slot' => $this->faker->randomElement($timeSlots),
             'timeslot_id' => \App\Models\Timeslot::inRandomOrder()->first(),
         ];
     }
