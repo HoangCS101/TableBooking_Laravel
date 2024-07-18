@@ -1,8 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\ProviderController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TableAvailabilityController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Admin\RoleController;
