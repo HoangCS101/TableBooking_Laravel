@@ -11,6 +11,7 @@ use App\Http\Controllers\TimeslotController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ChatController;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,5 +87,11 @@ Route::middleware('auth')->group(function () {
 Route::get('/chat/online', [ChatController::class, 'checkOnline']);
 Route::get('/chat/{chatId}', [ChatController::class, 'viewChat']);
 Route::post ('/chat/{chatId}', [ChatController::class, 'sendMessage']);
+
+Route::get('/token/create', function (Request $request) {
+    $token = $request->user()->createToken('apiToken', ['*'], now()->addWeek());
+ 
+    return response()->json(['token' => $token->plainTextToken]);
+})->middleware(['auth', 'verified', 'permission:generate token']);
 
 require __DIR__ . '/auth.php';

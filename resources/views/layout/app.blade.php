@@ -76,14 +76,17 @@
 
 @section('footer')
 <div class="float-right">
-    Version: {{ config('app.version', '1.0.0') }}
+    <button class="btn btn-sm" onclick="genToken()">
+        <i class="fas fa-key"> Generate One-time Token</i>
+    </button>
 </div>
 
 <strong>
     <a href="{{ config('app.company_url', '#') }}">
-        {{ config('app.company_name', 'My company') }}
+        {{ config('app.company_name', 'RestaurantName') }}
     </a>
 </strong>
+Table-Booking App Version: {{ config('app.version', '1.0.0') }}
 @stop
 
 {{-- Add common Javascript/Jquery code --}}
@@ -91,8 +94,33 @@
 @push('js')
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script>
+    function genToken() {
+        var xhttp;
+        xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var response = JSON.parse(this.responseText);
+                var token = response.token;
+
+                // Extract and trim the token value
+                var trimmedToken = token.split('|')[1]; // Split by '|' and get the second part
+                trimmedToken = trimmedToken.trim(); // Trim any leading or trailing whitespace
+
+                // Display confirmation or use the trimmed token as needed
+                alert('Token generated successfully, SAVE BEFORE CANCEL : ' + trimmedToken);
+            } else if (this.readyState == 4) {
+                // Handle errors or other statuses if needed
+                // alert('Error generating token. Status: ' + this.status);
+                alert('User has no permission to generate one-time token.');
+            }
+        };
+        xhttp.open("GET", "/token/create/", true);
+        xhttp.send();
+    }
+</script>
+<script>
     let globalVar = null;
-    
+
     // Pusher.logToConsole = true;
     var pusher = new Pusher('fbd1b1e67dcce929509f', {
         cluster: 'ap1'
@@ -198,7 +226,7 @@
     $('#users').on('click', 'a', function(event) { // 'a' -> any
         event.preventDefault();
         var chatId = $(this).data('id');
-        
+
         globalVar = chatId;
         if (channel) {
             channel.unbind(); // Unbind previous bindings

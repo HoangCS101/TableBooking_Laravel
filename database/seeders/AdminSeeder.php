@@ -26,5 +26,6 @@ class AdminSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => 'password',
         ])->assignRole('user');
+        User::factory(10)->create();
     }
 }

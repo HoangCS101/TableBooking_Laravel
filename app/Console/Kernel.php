@@ -14,6 +14,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('app:unlock-expired-data')->everyMinute();
+        $schedule->command('sanctum:prune-expired --hours=24')->daily(); // prune application's expired tokens
     }
 
     /**
