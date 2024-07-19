@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\BookingController;
 use App\Http\Controllers\Api\TimeslotController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +38,7 @@ Route::apiResource('timeslot', TimeslotController::class)->only([
     'index'
 ]);
 
-
+Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth.pat')->group(function () {
     Route::put('/user/profile', [UserController::class, 'updateProfile']);
