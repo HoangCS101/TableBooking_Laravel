@@ -16,15 +16,15 @@ class ProviderController extends Controller
     }
     public function callback($provider)
     {
-        $puser = Socialite::driver($provider)->user();
+        $provided_user = Socialite::driver($provider)->user();
         if ($provider == 'google') {
-            $user = User::where('google_id', $puser->getId())->first();
+            $user = User::where('google_id', $provided_user->getId())->first();
 
             if (!$user) {
                 $new = User::create([
-                    'name' => $puser->getName(),
-                    'email' => $puser->getEmail(),
-                    'google_id' => $puser->getID()
+                    'name' => $provided_user->getName(),
+                    'email' => $provided_user->getEmail(),
+                    'google_id' => $provided_user->getID()
                 ]);
                 Auth::login($new);
                 return redirect('/booking');
@@ -34,13 +34,13 @@ class ProviderController extends Controller
             }
         }
         else if ($provider == 'facebook') {
-            $user = User::where('facebook_id', $puser->getId())->first();
+            $user = User::where('facebook_id', $provided_user->getId())->first();
 
             if (!$user) {
                 $new = User::create([
-                    'name' => $puser->getName(),
-                    'email' => $puser->getEmail(),
-                    'facebook_id' => $puser->getID()
+                    'name' => $provided_user->getName(),
+                    'email' => $provided_user->getEmail(),
+                    'facebook_id' => $provided_user->getID()
                 ]);
                 Auth::login($new);
                 return redirect('/booking');
