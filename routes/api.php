@@ -22,13 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route::get('/hello', function () {
-//     return "Hello World!";
-// });
-// Route::post('/reverse-me', function (Request $request) {
-//     $reversed = strrev($request->input('reverse_this'));
-//     return $reversed;
-// });
+Route::post('/login', [AuthController::class, 'login']);
 
 Route::apiResource('booking', BookingController::class)->except([
     'create', 'show', 'edit'
@@ -38,11 +32,9 @@ Route::apiResource('timeslot', TimeslotController::class)->only([
     'index'
 ]);
 
-Route::post('/login', [AuthController::class, 'login']);
-
 Route::middleware('auth.pat')->group(function () {
     Route::put('/user/profile', [UserController::class, 'updateProfile']);
     Route::put('/user/password', [UserController::class, 'updatePassword']);
     Route::delete('/user', [UserController::class, 'delete']);
-    Route::get('/user', [UserController::class, 'test']);
+    Route::get('/user', [UserController::class, 'get']);
 });

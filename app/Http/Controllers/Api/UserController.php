@@ -2,31 +2,52 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\ProfileUpdateRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
     public function updateProfile(Request $request)
     {
-        $user = $request->user();
+        $validated = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255'],
+        ], [
+            'name.required' => 'The name field is required.',
+            'email.required' => 'The email field is required.',
+            'email.email' => 'The email must be a valid email address.',
+        ]);
+        if ($validated->fails()) return response()->json(['errors' => $validated->errors()], 422);
+        
+        $user = auth('sanctum')->user();
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->save();
 
-        return response()->json(['message' => 'Profile updated successfully']);
+        // return auth('sanctum')->user();
+        return response()->json([
+            'message' => 'Profile updated successfully',
+            'update user' => $user
+        ]);
     }
 
     public function updatePassword(Request $request)
     {
-        $request->validate([
+        $validated = Validator::make($request->all(), [
             'current_password' => 'required',
             'new_password' => 'required|min:8',
+        ], [
+            'current_password.required' => 'The current_password field is required.',
+            'new_password.required' => 'The new_password field is required.',
+            'new_password.min:8' => 'The new_password field must be greate than 8 characters.',
         ]);
+        if ($validated->fails()) return response()->json(['errors' => $validated->errors()], 422);
 
-        $user = $request->user();
-
+        $user = auth('sanctum')->user();
+        // return response()->json(['message' => $user->password], 200);
         if (!Hash::check($request->input('current_password'), $user->password)) {
             return response()->json(['message' => 'Current password is incorrect'], 401);
         }
@@ -39,13 +60,18 @@ class UserController extends Controller
 
     public function delete(Request $request)
     {
-        $request->user()->delete();
+        $token = $request->bearerToken();
 
-        return response()->json(['message' => 'Account deleted successfully']);
+        $user = auth('sanctum')->user();
+        $user->tokens()->delete();
+        $user->delete();
+
+        return response()->json(['message' => 'Account with token ' . $token . ' deleted successfully']);
     }
 
-    public function test()
+    public function get(Request $request)
     {
-        return response()->json(['message' => 'Made it inside.']);
+        return auth('sanctum')->user();
+        // return $request->user();
     }
 }

@@ -36,6 +36,7 @@ class MessageSent implements ShouldBroadcast
     }
     public function broadcastAs()
     {
-        return 'new-message';
+        // Naming the event thats is going to be broadcasted on the channels, and dont try making it array.
+        return 'new-message'; 
     }
 }
