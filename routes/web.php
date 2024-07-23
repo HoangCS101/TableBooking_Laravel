@@ -63,9 +63,11 @@ Route::middleware(['auth', 'verified', 'permission:manage bookings'])->group(fun
     Route::get('/booking/filter/{date}/{timeslot}', [TableAvailabilityController::class, 'filter']);
     Route::get('/booking/preview/{id}', [TableAvailabilityController::class, 'previewTable']);
 
-    // Payment
-    Route::post('/payment/{id}/{total}', [PaymentController::class, 'momopay']);
-    Route::get('/payment/{id}/success', [PaymentController::class, 'pay_succ']);
+    // Payment (Momo + VNPAY)
+    Route::post('/payment/momo/{id}/{total}', [PaymentController::class, 'momopay']);
+    Route::get('/payment/momo/{id}/callback', [PaymentController::class, 'momopay_succ']);
+    Route::post('/payment/vnpay/{id}/{total}', [PaymentController::class, 'vnpay']);
+    Route::get('/payment/vnpay/{id}/callback', [PaymentController::class, 'vnpay_succ']);
 });
 
 // Manage Timeslots, Tables and Users

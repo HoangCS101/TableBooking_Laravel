@@ -7,6 +7,13 @@ use App\Models\TableAvailability;
 
 class PaymentController extends Controller
 {
+    public function paid($id)
+    {
+        $paid = TableAvailability::find($id);
+        $paid->state = 'paid';
+        $paid->update();
+    }
+
     public function execPostRequest($url, $data)
     {
         $ch = curl_init($url);
@@ -39,14 +46,13 @@ class PaymentController extends Controller
         $orderInfo = "Thanh toán qua ATM MoMo";
         $amount = $total;
         $orderId = time() . "";
-        $redirectUrl = "http://tb.com/payment/" . $id . "/success";
-        $ipnUrl = "http://tb.com/payment/" . $id . "/success";
+        $redirectUrl = "https://tb.com/payment/momo/" . $id . "/callback";
+        $ipnUrl = "https://tb.com/payment/momo/" . $id . "/callback";
         $extraData = "";
 
 
         $requestId = time() . "";
         $requestType = "payWithATM";
-        // $extraData = ($_POST["extraData"] ? $_POST["extraData"] : "");
         //before sign HMAC SHA256 signature
         $rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
         $signature = hash_hmac("sha256", $rawHash, $secretKey);
@@ -67,18 +73,89 @@ class PaymentController extends Controller
             'signature' => $signature
         );
         $result = $this->execPostRequest($endpoint, json_encode($data));
-        $jsonResult = json_decode($result, true);  // decode json
-        // dd($result);
-        //Just a example, please check more in there
+        $jsonResult = json_decode($result, true);
 
         return redirect()->to($jsonResult['payUrl']);
-        // header('Location: ' . $jsonResult['payUrl']);
     }
-    public function pay_succ(string $id)
+
+    public function momopay_succ(Request $request, string $id)
     {
-        $todo = TableAvailability::find($id);
-        $todo->state = 'paid';
-        $todo->update();
-        return redirect('/booking/'.$id);
+        // dd($request);
+        if ($request->input('resultCode') == '0') $this->paid($id);
+        return redirect('/booking/' . $id);
+    }
+
+    public function vnpay(string $id, string $total)
+    {
+        $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+        $vnp_Returnurl = "https://tb.com/payment/vnpay/" . $id . "/callback";
+        $vnp_TmnCode = "521TA06S"; // Website code at VNPAY 
+        $vnp_HashSecret = "C0Z6KA8BIL53X6QAPBIZQKMFSEUD48OB";
+
+        $vnp_TxnRef = uniqid();
+        $vnp_OrderInfo = 'Test Payment';
+        $vnp_OrderType = 'billpayment';
+        $vnp_Amount = $total * 100;
+        $vnp_Locale = 'vn';
+        $vnp_BankCode = 'NCB';
+        $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];
+        $inputData = array(
+            "vnp_Version" => "2.1.0",
+            "vnp_TmnCode" => $vnp_TmnCode,
+            "vnp_Amount" => $vnp_Amount,
+            "vnp_Command" => "pay",
+            "vnp_CreateDate" => date('YmdHis'),
+            "vnp_CurrCode" => "VND",
+            "vnp_IpAddr" => $vnp_IpAddr,
+            "vnp_Locale" => $vnp_Locale,
+            "vnp_OrderInfo" => $vnp_OrderInfo,
+            "vnp_OrderType" => $vnp_OrderType,
+            "vnp_ReturnUrl" => $vnp_Returnurl,
+            "vnp_TxnRef" => $vnp_TxnRef,
+        );
+
+        if (isset($vnp_BankCode) && $vnp_BankCode != "") {
+            $inputData['vnp_BankCode'] = $vnp_BankCode;
+        }
+        if (isset($vnp_Bill_State) && $vnp_Bill_State != "") {
+            $inputData['vnp_Bill_State'] = $vnp_Bill_State;
+        }
+
+        //var_dump($inputData);
+        ksort($inputData);
+        $query = "";
+        $i = 0;
+        $hashdata = "";
+        foreach ($inputData as $key => $value) {
+            if ($i == 1) {
+                $hashdata .= '&' . urlencode($key) . "=" . urlencode($value);
+            } else {
+                $hashdata .= urlencode($key) . "=" . urlencode($value);
+                $i = 1;
+            }
+            $query .= urlencode($key) . "=" . urlencode($value) . '&';
+        }
+
+        $vnp_Url = $vnp_Url . "?" . $query;
+        if (isset($vnp_HashSecret)) {
+            $vnpSecureHash =   hash_hmac('sha512', $hashdata, $vnp_HashSecret);
+            $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
+        }
+        $returnData = array(
+            'code' => '00', 'message' => 'success', 'data' => $vnp_Url
+        );
+        if (isset($_POST['redirect'])) {
+            header('Location: ' . $vnp_Url);
+            die();
+        } else {
+            echo json_encode($returnData);
+        }
+    }
+
+    public function vnpay_succ(Request $request, string $id)
+    {
+        // dd($request);
+        if ($request->input('vnp_TransactionStatus') == '00') $this->paid($id);
+        return redirect('/booking/' . $id);
     }
 }

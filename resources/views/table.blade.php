@@ -108,12 +108,20 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <form action="{{ url('payment') }}/{{$t->id}}/{{$t->total}}" method="POST">
+                            <form action="{{ url('payment') }}/momo/{{$t->id}}/{{$t->total}}" method="POST">
                                 @csrf
                                 <input type="hidden" name="" value="">
-                                <button type="submit" class="btn custom-btn btn-lg" name="payUrl">
+                                <button type="submit" class="btn custom-btn btn-lg mb-3" name="payUrl">
                                     <img src="{{ asset('momoicon.png') }}" alt="Momo Icon" class="btn-icon">
                                     <span class="btn-text">Pay with Momo</span>
+                                    </a>
+                            </form>
+                            <form action="{{ url('payment') }}/vnpay/{{$t->id}}/{{$t->total}}" method="POST">
+                                @csrf
+                                <input type="hidden" name="" value="">
+                                <button type="submit" class="btn vn-btn btn-lg" name="redirect">
+                                    <img src="{{ asset('vnpaylogo.png') }}" alt="VNPAY Icon" class="btn-icon">
+                                    <span class="btn-text">Pay with VNPAY</span>
                                     </a>
                             </form>
                         </div>
@@ -155,6 +163,7 @@
 {{-- Add here extra stylesheets --}}
 {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
 <style>
+    /* Momo button */
     .custom-btn {
         background-color: #c1177c;
         border-color: #c1177c;
@@ -179,6 +188,35 @@
     }
 
     .custom-btn .btn-text {
+        padding-left: 40px;
+    }
+    /* VNPAY button */
+    .vn-btn {
+        background-color: white;
+        border-color: red ;
+        color: red ;
+        padding: 10px 20px;
+        position: relative;
+        width: 100%;
+        transition: background-color 0.3s ease;
+    }
+
+    .vn-btn:hover {
+        background-color: #f0f0f0;
+        border-color: blue;
+        color: blue;
+    }
+
+    .vn-btn .btn-icon {
+        position: absolute;
+        left: 2.5px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 100px;
+        height: auto;
+    }
+
+    .vn-btn .btn-text {
         padding-left: 40px;
     }
 </style>
