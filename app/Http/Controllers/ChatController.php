@@ -79,7 +79,10 @@ class ChatController extends Controller
     public function viewChat(Request $request, $chatId) {
         $user = $request->user();
         $chat = Chat::where('id', $chatId)->first();
+
         $receiver_id = ($user->id == $chat->user1_id) ? $chat->user2_id : $chat->user1_id;
+        $receiver = User::where('id', $receiver_id);
+
         $messages = Message::where('chat_id', $chatId)
                             ->select('message', 'sender_id', 'created_at')
                             ->orderBy('created_at', 'asc')
@@ -92,11 +95,15 @@ class ChatController extends Controller
             }
             else {
                 $message->type = 'you';
-                $message->name = User::where('id', $receiver_id)->pluck('name');
+                $message->name = $receiver->pluck('name');
             }
         }
 
-        return response()->json(['messages' => $messages]);
+        return response()->json([
+            'messages' => $messages,
+            'name' => $receiver->pluck('name'),
+            'pic' => $receiver->pluck('picture_url'),
+        ]);
     }
 
     public function sendMessage(Request $request, $chatId) {

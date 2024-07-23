@@ -47,13 +47,8 @@
                     </ul>
                 </aside>
                 <main>
-                    <header>
-                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt="">
-                        <div id="header">
-                            <h2>Chat with Vincent Porter</h2>
-                            <h3>already 1902 messages</h3>
-                        </div>
-                        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_star.png" alt="">
+                    <header id="header">
+                        
                     </header>
                     <ul id="chat">
 
@@ -139,7 +134,7 @@ Table-Booking App Version: {{ config('app.version', '1.0.0') }}
                     var messageHTML = `
                             <a href="#" data-id="${user.chat_id}">
                             <li>
-                            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/chat_avatar_01.jpg" alt="">
+                            <img src="${user.picture_url}" alt="" width="55" height="55">
                             <div>
                                 <h2>${user.name}</h2>
                                 <h2>ChatID : ${user.chat_id}</h2>
@@ -162,7 +157,7 @@ Table-Booking App Version: {{ config('app.version', '1.0.0') }}
 
     function fetchMessages(globalVar) {
         if (globalVar == null) return;
-        console.log(globalVar);
+        // console.log(globalVar);
         $.ajax({
             url: '/chat/' + globalVar,
             method: 'GET',
@@ -170,6 +165,7 @@ Table-Booking App Version: {{ config('app.version', '1.0.0') }}
                 // Clear existing messages
                 $('#chat').empty();
                 $('#header').empty();
+                // console.log(response);
 
                 response.messages.forEach(function(message) {
                     var messageHTML = `
@@ -188,8 +184,11 @@ Table-Booking App Version: {{ config('app.version', '1.0.0') }}
                 });
                 $('#chat').scrollTop($('#chat')[0].scrollHeight);
                 var header = `
-                        <h2>Chat with Thunder</h2>
-                        <h3>already 1902 messages</h3>
+                        <img src="${response.pic}" alt="" width="55" height="55">
+                        <div>
+                            <h2>${response.name}</h2>
+                            <h3>Online</h3>
+                        </div>
                     `;
                 $('#header').append(header);
             },
