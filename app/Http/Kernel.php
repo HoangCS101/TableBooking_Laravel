@@ -71,5 +71,6 @@ class Kernel extends HttpKernel
 
     protected $routeMiddleware = [
         'auth.pat' => \App\Http\Middleware\CheckPAT::class,
+        'check.permission' => \App\Http\Middleware\CheckPermission::class,
     ];
 }

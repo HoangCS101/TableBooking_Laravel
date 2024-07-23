@@ -79,8 +79,13 @@ class BookingController extends Controller
      */
     public function destroy($id)
     {
-        $booking = TableAvailability::findOrFail($id);
-        $booking->delete();
-        return response(null, 204);
+        try {
+            $booking = TableAvailability::findOrFail($id);
+            $booking->delete();
+            return response(['message' => 'Booking with id '.$id.' was removed from the database.'], 200);
+        }
+        catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to delete record: ' . $e->getMessage()], 500);
+        }
     }
 }

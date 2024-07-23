@@ -18,19 +18,20 @@ use App\Http\Controllers\API\AuthController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// }); // So this is the same as the get user below.
 
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::apiResource('booking', BookingController::class)->except([
     'create', 'show', 'edit'
-]);
+])->middleware(['auth:sanctum', 'check.permission:manage bookings']);
+// check.permission is made to deal with api permissions specifically, check \App\Http\Kernel for more info
 
 Route::apiResource('timeslot', TimeslotController::class)->only([
     'index'
-]);
+])->middleware(['auth:sanctum', 'check.permission:see timeslots']);
 
 Route::middleware('auth.pat')->group(function () {
     Route::put('/user/profile', [UserController::class, 'updateProfile']);
