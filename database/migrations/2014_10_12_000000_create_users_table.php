@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
+            $table->string('picture_url')->nullable()->default('https://static.vecteezy.com/system/resources/previews/009/292/244/original/default-avatar-icon-of-social-media-user-vector.jpg');
             $table->string('password')->nullable();
             $table->string('google_id')->nullable()->unique();
             $table->string('facebook_id')->nullable()->unique();

@@ -57,4 +57,11 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function updateAvatar(Request $request): RedirectResponse
+    {
+        $request->user()->picture_url = $request->input('picture_url');
+        $request->user()->save();
+        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    }
 }

@@ -18,12 +18,14 @@ class AdminSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@ad.min',
             'email_verified_at' => now(),
+            'picture_url' => 'https://yt3.ggpht.com/-0YGU25OjtDM/AAAAAAAAAAI/AAAAAAAAAAA/Vhjw8Wwnu2w/s900-c-k-no/photo.jpg',
             'password' => 'adminpass',
         ])->assignRole('admin');
         User::create([
-            'name' => 'random',
-            'email' => 'random@ran.dom',
+            'name' => 'Lone Wolf',
+            'email' => 'lonewolf@lone.wolf',
             'email_verified_at' => now(),
+            'picture_url' => 'https://th.bing.com/th/id/OIP.z2IW-sFfdWLMJpPWVJ4llwHaG9?rs=1&pid=ImgDetMain',
             'password' => 'password',
         ])->assignRole('user');
         User::factory(10)->create();

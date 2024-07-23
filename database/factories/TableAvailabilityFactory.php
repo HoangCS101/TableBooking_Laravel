@@ -25,6 +25,7 @@ class TableAvailabilityFactory extends Factory
             'pnum' => $this->faker->phoneNumber,
             'date' => $futureDate,
             'timeslot_id' => \App\Models\Timeslot::inRandomOrder()->first(),
+            'total' => '69000'
         ];
     }
 }
