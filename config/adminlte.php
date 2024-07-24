@@ -365,6 +365,10 @@ return [
                     'text' => 'Permissions',
                     'url' => 'admin/permissions',
                 ],
+                [
+                    'text' => 'Statistic',
+                    'url' => 'admin/stat',
+                ],
             ]
         ],
         ['header' => 'account_settings'],

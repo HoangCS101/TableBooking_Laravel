@@ -13,38 +13,6 @@ use App\Events\MessageSent;
 
 class ChatController extends Controller
 {
-    // public function rooms(Request $request) {
-    //     return ChatRoom::all();
-    // }
-
-    // public function messages(Request $request, $roomId) {
-    //     return ChatMessage::where('chat_room_id', $roomId)
-    //         ->with('user') // cuz we created that 'user' relationship in model
-    //         ->orderBy('created_at', 'DESC')
-    //         ->get();
-    // }
-
-    // public function newMessages(Request $request, $roomId) {
-    //     $newMessage = new ChatMessage;
-    //     $newMessage->user_id = Auth::id();
-    //     $newMessage->chat_romm_id = $roomId;
-    //     $newMessage->message = $request->message;
-    //     $newMessage->save();
-
-    //     broadcast(new MessageSent($newMessage))->toOthers();
-
-    //     return $newMessage;
-    // }
-
-    // public function index(Request $request)
-    // {
-    //     $user = $request->user();
-    //     // $chats = Chat::whereHas('users', function ($query) use ($user) {
-    //     //     $query->where('users.id', $user->id);
-    //     // })->get();
-    //     $chats = Chat::find(1)->messages()->pluck('message');
-    //     return response()->json(['chats' => $chats]);
-    // }
     public function checkOnline(Request $request)
     {
         $currentUser = $request->user();

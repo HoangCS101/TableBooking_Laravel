@@ -7,6 +7,7 @@ use App\Http\Controllers\TableAvailabilityController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\StatisticController;
 use App\Http\Controllers\TimeslotController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
@@ -51,6 +52,9 @@ Route::middleware(['auth', 'role:admin'])->name('admin.')->prefix('admin')->grou
         Route::put('/{id}', [PermissionController::class, 'update'])->name('permissions.update');
         Route::delete('/{id}', [PermissionController::class, 'destroy'])->name('permissions.destroy');
     });
+    Route::get('/stat',[StatisticController::class, 'index']);
+    Route::get('/stat/subscription',[StatisticController::class, 'subscription']);
+    Route::get('/stat/popularity',[StatisticController::class, 'tablePopularity']);
 });
 
 // Route::post('/booking/{id}', [TableAvailabilityController::class, 'update'])->middleware(['auth', 'verified', 'role:admin']);

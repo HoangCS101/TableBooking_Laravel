@@ -28,6 +28,6 @@ class AdminSeeder extends Seeder
             'picture_url' => 'https://th.bing.com/th/id/OIP.z2IW-sFfdWLMJpPWVJ4llwHaG9?rs=1&pid=ImgDetMain',
             'password' => 'password',
         ])->assignRole('user');
-        User::factory(10)->create();
+        User::factory(100)->create();
     }
 }
